@@ -1,7 +1,7 @@
-import { Link, Routes, Route, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
-import LinkMat from "@mui/material/Link";
+import Link from "@mui/material/Link";
 
 export default function Header() {
   const location = useLocation();
@@ -11,9 +11,9 @@ export default function Header() {
     <div>
       <h1>Titan Forums</h1>
       <Breadcrumbs aria-label="breadcrumb">
-        <LinkMat underline="hover" color="inherit" href="/">
+        <Link underline="hover" color="inherit" href="/">
           Threads
-        </LinkMat>
+        </Link>
         {pathnames.map((value, index) => {
           console.log(`${value} - ${index}`);
           const last = index === pathnames.length - 1;
@@ -24,9 +24,9 @@ export default function Header() {
               {value}
             </Typography>
           ) : (
-            <LinkMat underline="hover" color="inherit" href={to} key={to}>
+            <Link underline="hover" color="inherit" href={to} key={to}>
               {value}
-            </LinkMat>
+            </Link>
           );
         })}
       </Breadcrumbs>

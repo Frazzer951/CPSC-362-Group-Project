@@ -1,21 +1,16 @@
-import { Link } from "react-router-dom";
 import { getThreads } from "../data";
+import Link from "@mui/material/Link";
 
 export default function Threads() {
   let threads = getThreads();
   return (
     <div>
       <h2>Threads</h2>
-      <nav
-        style={{
-          border: "solid 1px",
-          padding: "1rem",
-        }}
-      >
+      <nav>
         {threads.map((thread) => (
           <Link
             style={{ display: "block", margin: "1rem 0" }}
-            to={`/${thread.id}`}
+            href={`/${thread.id}`}
             key={thread.id}
           >
             {thread.name} <br />
