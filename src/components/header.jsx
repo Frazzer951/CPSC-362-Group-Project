@@ -15,7 +15,6 @@ export default function Header() {
           Threads
         </Link>
         {pathnames.map((value, index) => {
-          console.log(`${value} - ${index}`);
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
