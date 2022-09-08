@@ -100,10 +100,16 @@ export let comments = [
     body: "Boo",
   },
   {
-    id: 2,
+    id: 3,
     postID: 0,
     userID: 2,
     body: "Really cool post",
+  },
+  {
+    id: 4,
+    postID: 6,
+    userID: 1,
+    body: "This is a comment",
   },
 ];
 
