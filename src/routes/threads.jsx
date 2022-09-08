@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import { getThreads } from "../data";
-import Link from "@mui/material/Link";
 
 export default function Threads() {
   let threads = getThreads();
@@ -10,7 +10,7 @@ export default function Threads() {
         {threads.map((thread) => (
           <Link
             style={{ display: "block", margin: "1rem 0" }}
-            href={`/${thread.id}`}
+            to={`/${thread.id}`}
             key={thread.id}
           >
             {thread.name} <br />

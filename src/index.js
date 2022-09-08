@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/CPSC-362-Group-Project">
       <App />
     </BrowserRouter>
   </React.StrictMode>
