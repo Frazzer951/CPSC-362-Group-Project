@@ -79,3 +79,24 @@ export let posts = [
     body: "Body 3.2",
   },
 ];
+
+export let comments = [
+  {
+    id: 0,
+    postID: 0,
+    userID: 0,
+    body: "A really cool comment",
+  },
+  {
+    id: 1,
+    postID: 0,
+    userID: 1,
+    body: "Another really cool comment",
+  },
+  {
+    id: 2,
+    postID: 0,
+    userID: 0,
+    body: "Boo",
+  },
+];

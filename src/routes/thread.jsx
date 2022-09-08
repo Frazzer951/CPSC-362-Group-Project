@@ -10,7 +10,7 @@ export default function Thread() {
   useEffect(() => {
     setThread(getThread(params.threadID));
     setPosts(getPosts(params.threadID));
-  }, []);
+  }, [params.threadID]);
 
   return (
     <div>
