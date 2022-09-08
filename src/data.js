@@ -1,4 +1,4 @@
-import { threads, posts, comments } from "./fakedata";
+import { threads, posts, comments, users } from "./fakedata";
 
 export function getThreads() {
   return threads;
@@ -18,4 +18,8 @@ export function getPost(id) {
 
 export function getComments(id) {
   return comments.filter((comment) => comment.postID === parseInt(id));
+}
+
+export function getUsername(id) {
+  return users.find((user) => user.id === parseInt(id)).username;
 }

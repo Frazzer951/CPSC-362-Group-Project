@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getComments, getPost } from "../data";
+import { getComments, getPost, getUsername } from "../data";
 
 export default function Post() {
   let params = useParams();
@@ -26,7 +26,7 @@ export default function Post() {
         comments.map((comment) => {
           return (
             <div>
-              {comment.userID}: {comment.body}
+              {getUsername(comment.userID)}: {comment.body}
             </div>
           );
         })

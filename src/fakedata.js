@@ -99,4 +99,31 @@ export let comments = [
     userID: 0,
     body: "Boo",
   },
+  {
+    id: 2,
+    postID: 0,
+    userID: 2,
+    body: "Really cool post",
+  },
+];
+
+export let users = [
+  {
+    id: 0,
+    username: "Frazzer",
+    about_me: "I am me",
+    admin: true,
+  },
+  {
+    id: 1,
+    username: "Dude_1",
+    about_me: "I am Dude_1",
+    admin: false,
+  },
+  {
+    id: 2,
+    username: "Dude_2",
+    about_me: "I am Dude_2",
+    admin: false,
+  },
 ];
