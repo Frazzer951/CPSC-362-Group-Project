@@ -1,3 +1,24 @@
+export let users = [
+  {
+    id: 0,
+    username: "Frazzer",
+    about_me: "I am me",
+    admin: true,
+  },
+  {
+    id: 1,
+    username: "Dude_1",
+    about_me: "I am Dude_1",
+    admin: false,
+  },
+  {
+    id: 2,
+    username: "Dude_2",
+    about_me: "I am Dude_2",
+    admin: false,
+  },
+];
+
 export let threads = [
   {
     id: 0,
@@ -26,15 +47,15 @@ export let posts = [
     id: 0,
     threadID: 0,
     userID: 0,
-    title: "Title 0.1",
-    body: "Body 0.1",
+    title: "Hi Im Frazzer",
+    body: "Hello, my name is Frazzer. I am a student at CSUF and am a CPSC Major.",
   },
   {
     id: 1,
     threadID: 0,
-    userID: 0,
-    title: "Title 0.2",
-    body: "Body 0.2",
+    userID: 1,
+    title: "Hi Im Dude_1",
+    body: "Im not real",
   },
   {
     id: 2,
@@ -110,26 +131,5 @@ export let comments = [
     postID: 6,
     userID: 1,
     body: "This is a comment",
-  },
-];
-
-export let users = [
-  {
-    id: 0,
-    username: "Frazzer",
-    about_me: "I am me",
-    admin: true,
-  },
-  {
-    id: 1,
-    username: "Dude_1",
-    about_me: "I am Dude_1",
-    admin: false,
-  },
-  {
-    id: 2,
-    username: "Dude_2",
-    about_me: "I am Dude_2",
-    admin: false,
   },
 ];

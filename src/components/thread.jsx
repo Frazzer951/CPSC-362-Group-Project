@@ -5,11 +5,7 @@ export default function Thread(props) {
   let { thread } = props;
 
   return (
-    <Link
-      style={{ textDecoration: "none" }}
-      to={`/${thread.id}`}
-      key={thread.id}
-    >
+    <Link style={{ textDecoration: "none" }} to={`/${thread.id}`} key={thread.id}>
       <Card sx={{ minWidth: 275, margin: "1rem" }}>
         <CardContent>
           <Typography variant="h5" component="div">

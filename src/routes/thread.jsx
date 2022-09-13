@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { Divider, Typography } from "@mui/material";
 import { getPosts, getThread } from "../data";
+import Post from "../components/post";
 
 export default function Thread() {
   let params = useParams();
@@ -16,29 +18,21 @@ export default function Thread() {
     <div>
       {thread ? (
         <>
-          <h2>Name: {thread.name}</h2>
-          <h3>Desc: {thread.desc}</h3>
+          <Typography variant="h3" sx={{ paddingTop: "1rem" }}>
+            {thread.name}
+          </Typography>
+          <Typography variant="h6" sx={{ padding: ".1rem" }}>
+            {thread.desc}
+          </Typography>
         </>
       ) : (
         <h2>Loading</h2>
       )}
-
-      <h3>Posts:</h3>
+      <Divider />
 
       {posts ? (
         posts.map((post) => {
-          return (
-            <div>
-              <Link
-                style={{ display: "block", margin: "1rem 0" }}
-                to={`${post.id}`}
-                key={post.id}
-              >
-                Title: {post.title} <br />
-                Body: {post.body}
-              </Link>
-            </div>
-          );
+          return <Post post={post} />;
         })
       ) : (
         <h2>Loading</h2>

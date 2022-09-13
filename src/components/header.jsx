@@ -1,14 +1,6 @@
 import { Link } from "react-router-dom";
 
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 
 export default function Header() {
@@ -34,10 +26,7 @@ export default function Header() {
 
           <Box sx={{ flexGrow: 1 }}>
             <Link style={{ textDecoration: "none" }} to={`/`} key="threads">
-              <Button
-                key="threads"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
+              <Button key="threads" sx={{ my: 2, color: "white", display: "block" }}>
                 Threads
               </Button>
             </Link>
