@@ -22,7 +22,6 @@ export default function Header() {
             component="a"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
@@ -33,7 +32,7 @@ export default function Header() {
             TITAN FORUMS
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1 }}>
             <Link style={{ textDecoration: "none" }} to={`/`} key="threads">
               <Button
                 key="threads"
