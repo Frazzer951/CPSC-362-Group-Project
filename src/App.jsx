@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Container } from "@mui/material";
 
 import Header from "./components/header";
 
@@ -8,7 +9,7 @@ import Threads from "./routes/threads";
 
 export default function App() {
   return (
-    <div>
+    <Container maxWidth="xl">
       <Header />
       <Routes>
         <Route path="/" element={<Threads />} />
@@ -23,6 +24,6 @@ export default function App() {
           }
         />
       </Routes>
-    </div>
+    </Container>
   );
 }
