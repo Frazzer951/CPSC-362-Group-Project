@@ -1,23 +1,20 @@
-import { Link } from "react-router-dom";
+import { Box, Divider, Typography } from "@mui/material";
 import { getThreads } from "../data";
+import Thread from "../components/thread";
 
 export default function Threads() {
   let threads = getThreads();
   return (
     <div>
-      <h2>Threads</h2>
-      <nav>
+      <Typography variant="h4" sx={{ padding: "1rem" }}>
+        Threads
+      </Typography>
+      <Divider />
+      <Box>
         {threads.map((thread) => (
-          <Link
-            style={{ display: "block", margin: "1rem 0" }}
-            to={`/${thread.id}`}
-            key={thread.id}
-          >
-            {thread.name} <br />
-            {thread.desc}
-          </Link>
+          <Thread thread={thread} />
         ))}
-      </nav>
+      </Box>
     </div>
   );
 }
