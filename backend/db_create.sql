@@ -1,4 +1,3 @@
--- Active: 1662318246144@@127.0.0.1@3306
 
 CREATE TABLE Users (
     user_id INT NOT NULL,
@@ -9,10 +8,9 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Threads (
-    thread_id INT NOT NULL,
+    thread_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(30),
-    description VARCHAR(50),
-    PRIMARY KEY (thread_id)
+    description VARCHAR(50)
 );
 
 CREATE TABLE Posts(
