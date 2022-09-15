@@ -9,21 +9,23 @@ import Threads from "./routes/threads";
 
 export default function App() {
   return (
-    <Container maxWidth="xl">
+    <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Threads />} />
-        <Route path="/:threadID" element={<Thread />} />
-        <Route path="/:threadID/:postID" element={<Post />} />
-        <Route
-          path="*"
-          element={
-            <main style={{ padding: "1rem" }}>
-              <p>There's nothing here!</p>
-            </main>
-          }
-        />
-      </Routes>
-    </Container>
+      <Container maxWidth="lg">
+        <Routes>
+          <Route path="/" element={<Threads />} />
+          <Route path="/:threadID" element={<Thread />} />
+          <Route path="/:threadID/:postID" element={<Post />} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
+        </Routes>
+      </Container>
+    </>
   );
 }
