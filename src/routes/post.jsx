@@ -17,18 +17,15 @@ export default function Post() {
   return (
     <div>
       {post ? (
-        <>
-          <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
-            <CardContent>
-              <Typography variant="body2">{getUsername(post.userID)}</Typography>
-              <Typography variant="h3" component="div">
-                {post.title}
-              </Typography>
-              <Typography variant="body1">{post.body}</Typography>
-            </CardContent>
-          </Card>
-          {post.body}
-        </>
+        <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
+          <CardContent>
+            <Typography variant="body2">{getUsername(post.userID)}</Typography>
+            <Typography variant="h3" component="div">
+              {post.title}
+            </Typography>
+            <Typography variant="body1">{post.body}</Typography>
+          </CardContent>
+        </Card>
       ) : (
         <h2>Loading</h2>
       )}
