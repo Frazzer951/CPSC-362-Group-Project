@@ -1,10 +1,8 @@
--- Active: 1662318246144@@127.0.0.1@3306
-
 CREATE TABLE Users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR(30) NOT NULL,
-    password VARCHAR(20) NOT NULL,
-    about_me VARCHAR(30),
+    username VARCHAR(32) NOT NULL,
+    password VARCHAR(32) NOT NULL,
+    about_me VARCHAR(1024),
     admin BOOL
 );
 INSERT INTO Users(username, password, admin) VALUES("faker10", "12345", 1);
