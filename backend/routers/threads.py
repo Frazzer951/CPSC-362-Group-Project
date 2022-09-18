@@ -1,12 +1,12 @@
 from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from utils import row_to_dict
 import sqlite3
 
-app = FastAPI()
+router = APIRouter()
 
 
-@app.get("/threads/")
+@router.get("/threads/")
 async def retrieve_all_threads():
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -19,7 +19,7 @@ async def retrieve_all_threads():
     return looking_for
 
 
-@app.get("/threads/{thread_id}")
+@router.get("/threads/{thread_id}")
 async def retrieve_specified_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -33,7 +33,7 @@ async def retrieve_specified_thread(thread_id: int):
     return looking_for
 
 
-@app.post("/threads/")
+@router.post("/threads/")
 async def create_thread(name: str, desc: str):
     con = sqlite3.connect("project.db")
     cur = con.cursor()

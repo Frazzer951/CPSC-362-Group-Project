@@ -1,12 +1,11 @@
 from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from utils import row_to_dict
 import sqlite3
 
-app = FastAPI()
+router = APIRouter()
 
-
-@app.get("/posts/{thread_id}")
+@router.get("/posts/{thread_id}")
 async def retrieve_posts_in_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -19,7 +18,7 @@ async def retrieve_posts_in_thread(thread_id: int):
     return looking_for
 
 
-@app.get("/post/{post_id}")
+@router.get("/post/{post_id}")
 async def retrieve_specified_post(post_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -35,7 +34,7 @@ async def retrieve_specified_post(post_id: int):
     return looking_for
 
 
-@app.post("/posts/{thread_id}")
+@router.post("/posts/{thread_id}")
 async def create_post_in_thread(thread_id: int, user_id: int, title: str, body: str):
     # We can use pydantic classes instead of so many arguments
     # Something we can do later

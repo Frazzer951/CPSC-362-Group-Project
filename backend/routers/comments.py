@@ -1,12 +1,12 @@
 from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from utils import row_to_dict
 import sqlite3
 
-app = FastAPI()
+router = APIRouter()
 
 
-@app.get("/comments/{post_id}")
+@router.get("/comments/{post_id}")
 async def retrieve_comments_from_post(post_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
