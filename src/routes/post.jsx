@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getComments, getUsername, getPost } from "../data";
 import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
+import { api } from "../api";
 import Comment from "../components/comment";
 
 export default function Post() {
@@ -10,8 +10,25 @@ export default function Post() {
   const [comments, setComments] = useState();
 
   useEffect(() => {
-    setPost(getPost(params.postID));
-    setComments(getComments(params.postID));
+    api
+      .get(`/post/${params.postID}`)
+      .then((res) => {
+        console.log(res);
+        setPost(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    api
+      .get(`/comments/${params.postID}`)
+      .then((res) => {
+        console.log(res);
+        setComments(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [params.postID]);
 
   return (
@@ -19,7 +36,7 @@ export default function Post() {
       {post ? (
         <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
           <CardContent>
-            <Typography variant="body2">{getUsername(post.userID)}</Typography>
+            <Typography variant="body2">{post.username}</Typography>
             <Typography variant="h3" component="div">
               {post.title}
             </Typography>
