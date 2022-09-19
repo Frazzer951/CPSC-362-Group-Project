@@ -1,7 +1,7 @@
+import { api } from "../api";
+import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
-import { api } from "../api";
 import Comment from "../components/comment";
 
 export default function Post() {

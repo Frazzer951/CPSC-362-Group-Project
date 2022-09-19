@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Box, Divider, Typography } from "@mui/material";
 import { api } from "../api";
+import { Box, Divider, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Thread from "../components/thread";
 
 export default function Threads() {

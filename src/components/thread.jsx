@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Thread(props) {
   let { thread } = props;

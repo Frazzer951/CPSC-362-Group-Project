@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { Card, CardContent, Typography } from "@mui/material";
 import { api } from "../api";
+import { Card, CardContent, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Post(props) {
