@@ -1,9 +1,23 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
-import { getUsername } from "../data";
+import { api } from "../api";
+import { useEffect, useState } from "react";
 
 export default function Post(props) {
   let { post } = props;
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    api
+      .get(`/users/${post.user_id}`)
+      .then((res) => {
+        console.log(res);
+        setUsername(res.data.username);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [post.user_id]);
 
   return (
     <Link style={{ textDecoration: "none" }} to={`${post.post_id}`} key={post.post_id}>
@@ -12,7 +26,7 @@ export default function Post(props) {
           <Typography variant="h5" component="div">
             {post.title}
           </Typography>
-          <Typography variant="body2">by {getUsername(post.user_id)}</Typography>
+          <Typography variant="body2">by {username}</Typography>
         </CardContent>
       </Card>
     </Link>
