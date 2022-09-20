@@ -1,5 +1,6 @@
 from concurrent.futures import thread
 from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
+from pydantic import BaseModel
 from utils import row_to_dict
 import sqlite3
 
@@ -18,3 +19,16 @@ async def retrieve_specified_username(user_id: int):
     # Get the list of tuples generated from the query
     con.close()
     return looking_for
+
+
+class User(BaseModel):
+    username: str
+    password: str
+
+@router.post("/user/create")
+async def create_user(user: User):
+    return {}
+
+@router.post("/auth")
+async def authenticate_user(user: User):
+    return {"userID": 0, "isAdmin": True}
