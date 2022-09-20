@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers import threads, postz, comments, users
+
 app = FastAPI()
 
 """Credit to JVP Design and tiangolo website for teaching how to route:
@@ -27,6 +28,7 @@ app.include_router(threads.router)
 app.include_router(postz.router)
 app.include_router(comments.router)
 app.include_router(users.router)
+
 
 @app.get("/")
 async def root():
