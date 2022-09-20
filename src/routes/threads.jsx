@@ -1,13 +1,13 @@
-import { api } from "../api";
 import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import axios from "../api/axios";
 import Thread from "../components/thread";
 
 export default function Threads() {
   const [threads, setThreads] = useState();
 
   useEffect(() => {
-    api
+    axios
       .get("/threads")
       .then((res) => {
         console.log(res);

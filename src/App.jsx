@@ -7,6 +7,8 @@ import Post from "./routes/post";
 import Thread from "./routes/thread";
 import Threads from "./routes/threads";
 
+import Login from "./components/login";
+
 export default function App() {
   return (
     <>

@@ -1,8 +1,9 @@
-import { api } from "../api";
 import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Comment from "../components/comment";
+
+import axios from "../api/axios";
 
 export default function Post() {
   let params = useParams();
@@ -10,7 +11,7 @@ export default function Post() {
   const [comments, setComments] = useState();
 
   useEffect(() => {
-    api
+    axios
       .get(`/post/${params.postID}`)
       .then((res) => {
         console.log(res);
@@ -20,7 +21,7 @@ export default function Post() {
         console.log(err);
       });
 
-    api
+    axios
       .get(`/comments/${params.postID}`)
       .then((res) => {
         console.log(res);
