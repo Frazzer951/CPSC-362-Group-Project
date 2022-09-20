@@ -31,7 +31,7 @@ export default function Login() {
 
       const userID = response?.data?.userID;
       const admin = response?.data?.isAdmin;
-      setAuth({ user, pwd, admin, userID });
+      setAuth({ user, logged_in: true, admin, userID });
 
       setUser("");
       setPwd("");
