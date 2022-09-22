@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(LOGIN_URL, {
+      const response = await axios.get(LOGIN_URL, {
         username: user,
         password: pwd,
         withCredentials: true,
