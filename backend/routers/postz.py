@@ -5,13 +5,15 @@ import sqlite3
 
 router = APIRouter()
 
-
 @router.get("/posts/{thread_id}")
 async def retrieve_posts_in_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     cur = con.cursor()  # cur is cursor
-    sq = cur.execute(f"SELECT * FROM Posts WHERE thread_id = {thread_id}")
+    sql_query = f"""SELECT username, P.user_id, title FROM 
+                    Posts P, Users U WHERE thread_id = {thread_id}
+                    AND P.user_id = U.user_id"""
+    sq = cur.execute(sql_query)
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchall()
     # Get the list of tuples generated form the query
