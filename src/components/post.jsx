@@ -1,14 +1,15 @@
-import { api } from "../api";
 import { Card, CardContent, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import axios from "../api/axios";
 
 export default function Post(props) {
   let { post } = props;
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    api
+    axios
       .get(`/users/${post.user_id}`)
       .then((res) => {
         console.log(res);

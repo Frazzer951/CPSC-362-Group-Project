@@ -8,7 +8,7 @@ export default function Comment(props) {
     <Card sx={{ minWidth: 275, margin: "0.5rem", backgroundColor: theme.palette.secondary.main }}>
       <CardContent>
         <Typography variant="body2">{comment.username}</Typography>
-        <Typography variant="body1">by {comment.body}</Typography>
+        <Typography variant="body1">{comment.body}</Typography>
       </CardContent>
     </Card>
   );
