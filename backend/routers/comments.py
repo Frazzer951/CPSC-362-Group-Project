@@ -21,6 +21,7 @@ async def retrieve_comments_from_post(post_id: int):
     con.close()
     return looking_for
 
+
 @router.post("/posts/{thread_id}")
 async def create_post_in_thread(thread_id: int, user_id: int, title: str, body: str):
     # We can use pydantic classes instead of so many arguments

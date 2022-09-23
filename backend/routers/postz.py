@@ -5,6 +5,7 @@ import sqlite3
 
 router = APIRouter()
 
+
 @router.get("/posts/{thread_id}")
 async def retrieve_posts_in_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
