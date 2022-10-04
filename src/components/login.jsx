@@ -11,7 +11,6 @@ export default function Login() {
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     setErrMsg("");
@@ -21,13 +20,13 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.get(LOGIN_URL, {
+      const response = await axios.post(LOGIN_URL, {
         username: user,
         password: pwd,
         withCredentials: true,
       });
 
-      console.log(response?.data);
+      // console.log(response?.data);
 
       const userID = response?.data?.userID;
       const admin = response?.data?.isAdmin;
@@ -35,7 +34,6 @@ export default function Login() {
 
       setUser("");
       setPwd("");
-      setSuccess(true);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -50,46 +48,18 @@ export default function Login() {
   };
 
   return (
-    <>
-      {success ? (
-        <section>
-          <h1>You are logged in!</h1>
-          <br />
-          <p>
-            <a href="#">Go to Home</a>
-          </p>
-        </section>
-      ) : (
-        <section>
-          <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-          <h1>Sign In</h1>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              autoComplete="off"
-              onChange={(e) => setUser(e.target.value)}
-              value={user}
-              required
-            />
+    <section>
+      <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
 
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="username">Username:</label>
+        <input type="text" id="username" autoComplete="off" onChange={(e) => setUser(e.target.value)} value={user} required />
 
-            <button>Sign In</button>
-          </form>
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
 
-          <p>
-            Need an Account?
-            <br />
-            <span className="line">
-              {/* put router link here */}
-              <a href="#">Sign Up</a>
-            </span>
-          </p>
-        </section>
-      )}
-    </>
+        <button>Sign In</button>
+      </form>
+    </section>
   );
 }

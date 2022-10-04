@@ -1,24 +1,29 @@
 import { AccountCircle } from "@mui/icons-material";
-import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Modal } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Popover, Tab } from "@mui/material";
 import { Link } from "react-router-dom";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useState } from "react";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import Login from "./login";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [tabValue, setTabValue] = useState("1");
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const open = Boolean(anchorEl);
+  const popover_id = open ? "popover" : undefined;
 
   return (
     <AppBar position="static">
@@ -48,27 +53,41 @@ export default function Header() {
             </Link>
           </Box>
 
-          <Button onClick={handleOpen}>
+          <Button onClick={handleClick}>
             <Avatar sx={{ bgcolor: "#ffffff" }}>
               <AccountCircle color="secondary" />
             </Avatar>
           </Button>
 
-          <Modal
+          <Popover
+            id={popover_id}
             open={open}
+            anchorEl={anchorEl}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
           >
-            <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Text in a modal
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
+            <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>
+              <TabContext value={tabValue}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <TabList onChange={handleChange} aria-label="lab API tabs example">
+                    <Tab label="Login" value="1" />
+                    <Tab label="Create Account" value="2" />
+                  </TabList>
+                </Box>
+                <TabPanel value="1">
+                  <Login />
+                </TabPanel>
+                <TabPanel value="2">Item Two</TabPanel>
+              </TabContext>
             </Box>
-          </Modal>
+          </Popover>
         </Toolbar>
       </Container>
     </AppBar>
