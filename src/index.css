@@ -37,3 +37,11 @@ button {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
+.sucmsg {
+  background-color: lightblue;
+  color: black;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
