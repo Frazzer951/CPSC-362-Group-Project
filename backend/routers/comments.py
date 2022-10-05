@@ -20,3 +20,16 @@ async def retrieve_comments_from_post(post_id: int):
 
     con.close()
     return looking_for
+
+
+@router.post("/posts/{thread_id}")
+async def create_post_in_thread(thread_id: int, user_id: int, title: str, body: str):
+    # We can use pydantic classes instead of so many arguments
+    # Something we can do later
+    con = sqlite3.connect("project.db")
+    cur = con.cursor()
+    sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
+    cur.execute(sql_query, [thread_id, user_id, title, body])
+    con.commit()
+    con.close()
+    return {"SUCCESS": True}

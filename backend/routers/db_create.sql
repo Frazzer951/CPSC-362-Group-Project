@@ -1,10 +1,13 @@
+-- Active: 1662318246144@@127.0.0.1@3306
 CREATE TABLE Users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR(32) NOT NULL,
+    username VARCHAR(32) NOT NULL UNIQUE,
     password VARCHAR(32) NOT NULL,
     about_me VARCHAR(1024),
     admin BOOL
 );
+
+
 INSERT INTO Users(username, password, admin) VALUES("faker10", "12345", 1);
 
 CREATE TABLE Threads (
