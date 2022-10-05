@@ -10,7 +10,7 @@
     "@mui/icons-material": "^5.10",
     "@mui/lab": "^5.0.0-alpha.102",
     "@mui/material": "^5.10",
-    "axios": "^0.27",
+    "axios": "^1.0",
     "react": "^18.2",
     "react-dom": "^18.2",
     "react-router-dom": "^6.4",
