@@ -2,11 +2,15 @@ import { AccountCircle } from "@mui/icons-material";
 import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Popover, Tab } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
+import AuthContext from "../context/AuthProvider";
 import Login from "./login";
+import CreateAccount from "./create_account";
 
 export default function Header() {
+  const { auth } = useContext(AuthContext);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [tabValue, setTabValue] = useState("1");
 
@@ -73,20 +77,26 @@ export default function Header() {
               horizontal: "center",
             }}
           >
-            <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>
-              <TabContext value={tabValue}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <TabList onChange={handleChange} aria-label="lab API tabs example">
-                    <Tab label="Login" value="1" />
-                    <Tab label="Create Account" value="2" />
-                  </TabList>
-                </Box>
-                <TabPanel value="1">
-                  <Login />
-                </TabPanel>
-                <TabPanel value="2">Item Two</TabPanel>
-              </TabContext>
-            </Box>
+            {auth.logged_in ? (
+              <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>{JSON.stringify(auth)}</Box>
+            ) : (
+              <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>
+                <TabContext value={tabValue}>
+                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList onChange={handleChange} centered>
+                      <Tab label="Login" value="1" />
+                      <Tab label="Create Account" value="2" />
+                    </TabList>
+                  </Box>
+                  <TabPanel value="1">
+                    <Login />
+                  </TabPanel>
+                  <TabPanel value="2">
+                    <CreateAccount />
+                  </TabPanel>
+                </TabContext>
+              </Box>
+            )}
           </Popover>
         </Toolbar>
       </Container>

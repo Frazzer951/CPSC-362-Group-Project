@@ -2,10 +2,9 @@ import { useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 
 import axios from "../api/axios";
-const LOGIN_URL = "/auth";
+const CREATE_ACCOUNT_URL = "/user/create";
 
-/// Code inspired tutorial at https://www.youtube.com/watch?v=X3qyxo_UTR4
-export default function Login() {
+export default function CreateAccount() {
   const { setAuth } = useContext(AuthContext);
 
   const [user, setUser] = useState("");
@@ -20,17 +19,17 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(LOGIN_URL, {
+      const response = await axios.post(CREATE_ACCOUNT_URL, {
         username: user,
         password: pwd,
         withCredentials: true,
       });
 
-      // console.log(response?.data);
+      console.log(response?.data);
 
-      const userID = response?.data?.userID;
-      const admin = response?.data?.isAdmin;
-      setAuth({ user, logged_in: true, admin, userID });
+      // const userID = response?.data?.userID;
+      // const admin = response?.data?.isAdmin;
+      // setAuth({ user, logged_in: true, admin, userID });
 
       setUser("");
       setPwd("");
@@ -58,7 +57,7 @@ export default function Login() {
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
 
-        <button>Sign In</button>
+        <button>Create Account</button>
       </form>
     </section>
   );

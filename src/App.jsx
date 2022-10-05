@@ -1,7 +1,5 @@
 import { Container } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "./context/AuthProvider";
 
 import Header from "./components/header";
 
@@ -10,8 +8,6 @@ import Thread from "./routes/thread";
 import Threads from "./routes/threads";
 
 export default function App() {
-  const { auth } = useContext(AuthContext);
-
   return (
     <>
       <Header />

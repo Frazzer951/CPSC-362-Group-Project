@@ -1,24 +1,8 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import axios from "../api/axios";
 
 export default function Post(props) {
   let { post } = props;
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    axios
-      .get(`/users/${post.user_id}`)
-      .then((res) => {
-        console.log(res);
-        setUsername(res.data.username);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [post.user_id]);
 
   return (
     <Link style={{ textDecoration: "none" }} to={`${post.post_id}`} key={post.post_id}>
@@ -27,7 +11,7 @@ export default function Post(props) {
           <Typography variant="h5" component="div">
             {post.title}
           </Typography>
-          <Typography variant="body2">by {username}</Typography>
+          <Typography variant="body2">by {post.username}</Typography>
         </CardContent>
       </Card>
     </Link>
