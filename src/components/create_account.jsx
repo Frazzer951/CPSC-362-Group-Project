@@ -1,16 +1,14 @@
-import { useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import { useState, useEffect } from "react";
 
 import axios from "../api/axios";
-const LOGIN_URL = "/user/auth";
+const CREATE_ACCOUNT_URL = "/user/create";
 
 /// Code inspired tutorial at https://www.youtube.com/watch?v=X3qyxo_UTR4
-export default function Login() {
-  const { setAuth } = useContext(AuthContext);
-
+export default function CreateAccount() {
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [sucMsg, setSucMsg] = useState("");
 
   useEffect(() => {
     setErrMsg("");
@@ -20,27 +18,29 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(LOGIN_URL, {
+      const response = await axios.post(CREATE_ACCOUNT_URL, {
         username: user,
         password: pwd,
         withCredentials: true,
       });
 
-      // console.log(response?.data);
+      console.log(response?.data);
 
-      const userID = response?.data?.userID;
-      const admin = response?.data?.isAdmin;
-      setAuth({ user, logged_in: true, admin, userID });
+      // const userID = response?.data?.userID;
+      // const admin = response?.data?.isAdmin;
+      // setAuth({ user, logged_in: true, admin, userID });
 
       setUser("");
       setPwd("");
+      setSucMsg("Account Successfully Created");
+
+      console.log(sucMsg);
     } catch (err) {
+      setSucMsg("");
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
-        setErrMsg("Missing Username or Password");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
+      } else if (err.response?.status === 406) {
+        setErrMsg("User already exists");
       } else {
         setErrMsg("Login Failed");
       }
@@ -50,6 +50,7 @@ export default function Login() {
   return (
     <section>
       <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+      <p className={sucMsg ? "sucmsg" : "offscreen"}>{sucMsg}</p>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username:</label>
@@ -58,7 +59,7 @@ export default function Login() {
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
 
-        <button>Sign In</button>
+        <button>Create Account</button>
       </form>
     </section>
   );
