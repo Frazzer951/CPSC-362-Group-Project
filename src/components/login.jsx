@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 
 import axios from "../api/axios";
-const LOGIN_URL = "/auth";
+const LOGIN_URL = "/user/auth";
 
 /// Code inspired tutorial at https://www.youtube.com/watch?v=X3qyxo_UTR4
 export default function Login() {
