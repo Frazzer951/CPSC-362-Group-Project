@@ -37,6 +37,7 @@ async def create_user(user: User):
         cur.execute(sql_query, [user.username, user.password, False])
         con.commit()
     except sqlite3.IntegrityError:
+        con.close()
         raise HTTPException(status_code=406, detail="User already exists")
     # sq is a cursor resulting from the query made
 
