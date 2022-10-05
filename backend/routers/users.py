@@ -25,10 +25,30 @@ class User(BaseModel):
     username: str
     password: str
 
+
 @router.post("/user/create")
 async def create_user(user: User):
-    return {}
+    # user.username, user.password
+    con = sqlite3.connect("project.db")  # con is connection
+    con.row_factory = row_to_dict
+    cur = con.cursor()  # cur is cursor
+    sql_query = "INSERT INTO Users(username, password, admin) VALUES(?, ?, ?)"
+    try:
+        cur.execute(sql_query, [user.username, user.password, False])
+        con.commit()
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=406, detail="User already exists")
+    # sq is a cursor resulting from the query made
 
-@router.post("/auth")
+    # Get the list of tuples generated from the query
+    con.close()
+    # check if user already exists
+    # if it does error 406
+    # otherwise return success
+    return {"detail": "SUCCESS"}
+
+
+@router.post("/user/auth/")
 async def authenticate_user(user: User):
+    # if user does not exist or password return 401
     return {"userID": 0, "isAdmin": True}
