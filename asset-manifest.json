@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/CPSC-362-Group-Project/static/css/main.02f58e1a.css",
-    "main.js": "/CPSC-362-Group-Project/static/js/main.e3b727c3.js",
+    "main.js": "/CPSC-362-Group-Project/static/js/main.eb2a8bf2.js",
     "index.html": "/CPSC-362-Group-Project/index.html",
     "main.02f58e1a.css.map": "/CPSC-362-Group-Project/static/css/main.02f58e1a.css.map",
-    "main.e3b727c3.js.map": "/CPSC-362-Group-Project/static/js/main.e3b727c3.js.map"
+    "main.eb2a8bf2.js.map": "/CPSC-362-Group-Project/static/js/main.eb2a8bf2.js.map"
   },
   "entrypoints": [
     "static/css/main.02f58e1a.css",
-    "static/js/main.e3b727c3.js"
+    "static/js/main.eb2a8bf2.js"
   ]
 }
