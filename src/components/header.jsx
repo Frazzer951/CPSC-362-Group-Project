@@ -10,7 +10,7 @@ import Login from "./login";
 import CreateAccount from "./create_account";
 
 export default function Header() {
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,11 +29,10 @@ export default function Header() {
   };
 
   const logout = () => {
-    console.log("Logout");
+    setAuth({ logged_in: false });
   };
 
   const goto_userpage = () => {
-    console.log("Goto Userpage");
     navigate(`/user/${auth.userID}`);
   };
 
