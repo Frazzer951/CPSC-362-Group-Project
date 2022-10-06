@@ -1,8 +1,9 @@
 import { AccountCircle } from "@mui/icons-material";
-import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Popover, Tab } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Popover, Tab, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthProvider";
 import Login from "./login";
@@ -10,6 +11,7 @@ import CreateAccount from "./create_account";
 
 export default function Header() {
   const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [tabValue, setTabValue] = useState("1");
@@ -24,6 +26,15 @@ export default function Header() {
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const logout = () => {
+    console.log("Logout");
+  };
+
+  const goto_userpage = () => {
+    console.log("Goto Userpage");
+    navigate(`/user/${auth.userID}`);
   };
 
   const open = Boolean(anchorEl);
@@ -78,7 +89,10 @@ export default function Header() {
             }}
           >
             {auth.logged_in ? (
-              <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>{JSON.stringify(auth)}</Box>
+              <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem onClick={goto_userpage}>Profile</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </Menu>
             ) : (
               <Box sx={{ width: "100%", typography: "body1", backgroundColor: "white" }}>
                 <TabContext value={tabValue}>
