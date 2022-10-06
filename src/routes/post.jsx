@@ -1,9 +1,9 @@
 import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Comment from "../components/comment";
 
 import axios from "../api/axios";
+import Comment from "../components/comment";
 
 export default function Post() {
   let params = useParams();

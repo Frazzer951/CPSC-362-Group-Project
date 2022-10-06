@@ -1,13 +1,12 @@
 import { AccountCircle } from "@mui/icons-material";
-import { AppBar, Avatar, Box, Button, Container, Toolbar, Typography, Popover, Tab, Menu, MenuItem } from "@mui/material";
-import { Link } from "react-router-dom";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { AppBar, Avatar, Box, Button, Container, Menu, MenuItem, Popover, Tab, Toolbar, Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthProvider";
-import Login from "./login";
 import CreateAccount from "./create_account";
+import Login from "./login";
 
 export default function Header() {
   const { auth, setAuth } = useContext(AuthContext);

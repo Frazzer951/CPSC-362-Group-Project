@@ -1,5 +1,6 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+
 import axios from "../api/axios";
 import Thread from "../components/thread";
 

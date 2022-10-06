@@ -1,6 +1,7 @@
-import { Divider, Typography, Paper } from "@mui/material";
+import { Divider, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import axios from "../api/axios";
 
 export default function User() {

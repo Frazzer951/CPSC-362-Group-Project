@@ -1,9 +1,9 @@
 import { Container } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useContext, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 
-import AuthContext from "./context/AuthProvider";
 import Header from "./components/header";
+import AuthContext from "./context/AuthProvider";
 import Post from "./routes/post";
 import Thread from "./routes/thread";
 import Threads from "./routes/threads";
