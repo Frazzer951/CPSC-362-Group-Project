@@ -7,7 +7,7 @@ import sqlite3
 router = APIRouter()
 
 
-@router.get("/users/{user_id}")
+@router.get("/users/{user_id}", tags=["users"])
 async def retrieve_user_data(user_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -26,7 +26,7 @@ class User(BaseModel):
     password: str
 
 
-@router.post("/user/create")
+@router.post("/user/create", tags=["users"])
 async def create_user(user: User):
     # user.username, user.password
     con = sqlite3.connect("project.db")  # con is connection
@@ -49,7 +49,7 @@ async def create_user(user: User):
     return {"detail": "SUCCESS"}
 
 
-@router.get("/user/auth/")
+@router.get("/user/auth/", tags=["users"])
 async def authenticate_user(user: User):
     #TODO: Use FastAPI Authenitcation to authenticate the user securely
     # if user does not exist or password return 401
