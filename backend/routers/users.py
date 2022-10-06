@@ -7,12 +7,12 @@ import sqlite3
 router = APIRouter()
 
 
-@router.get("/users/{user_id}")
-async def retrieve_specified_username(user_id: int):
+@router.get("/users/{user_id}", tags=["users"])
+async def retrieve_user_data(user_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     cur = con.cursor()  # cur is cursor
-    sql_query = "SELECT username FROM Users WHERE user_id = ?"
+    sql_query = "SELECT * FROM Users WHERE user_id = ?"
     sq = cur.execute(sql_query, [user_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchone()
@@ -26,7 +26,7 @@ class User(BaseModel):
     password: str
 
 
-@router.post("/user/create")
+@router.post("/user/create", tags=["users"])
 async def create_user(user: User):
     # user.username, user.password
     con = sqlite3.connect("project.db")  # con is connection
@@ -49,7 +49,18 @@ async def create_user(user: User):
     return {"detail": "SUCCESS"}
 
 
-@router.post("/user/auth/")
+@router.get("/user/auth/", tags=["users"])
 async def authenticate_user(user: User):
+    #TODO: Use FastAPI Authenitcation to authenticate the user securely
     # if user does not exist or password return 401
-    return {"userID": 0, "isAdmin": True}
+    con = sqlite3.connect("project.db")  # con is connection
+    con.row_factory = row_to_dict
+    cur = con.cursor()  # cur is cursor
+    sql_query = "SELECT user_id, admin FROM Users WHERE username = ? AND password = ?"
+    sq = cur.execute(sql_query, [user.username, user.password])
+    looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(
+            status_code=401, detail="Unauthorized"
+        )
+    return looking_for
