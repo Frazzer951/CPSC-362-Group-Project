@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import { useContext, useEffect, useState } from "react";
 
 import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
+
 const LOGIN_URL = "/user/auth";
 
 /// Code inspired tutorial at https://www.youtube.com/watch?v=X3qyxo_UTR4
@@ -30,7 +31,9 @@ export default function Login() {
 
       const userID = response?.data?.userID;
       const admin = response?.data?.isAdmin;
-      setAuth({ user, logged_in: true, admin, userID });
+      setAuth({ logged_in: true, admin, userID });
+      localStorage.setItem("userID", userID);
+      localStorage.setItem("isAdmin", admin);
 
       setUser("");
       setPwd("");

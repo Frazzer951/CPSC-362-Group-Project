@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "../api/axios";
+
 const CREATE_ACCOUNT_URL = "/user/create";
 
 /// Code inspired tutorial at https://www.youtube.com/watch?v=X3qyxo_UTR4
