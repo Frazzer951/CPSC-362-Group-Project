@@ -30,6 +30,8 @@ export default function Header() {
 
   const logout = () => {
     setAuth({ logged_in: false });
+    localStorage.removeItem("userID");
+    localStorage.removeItem("isAdmin");
   };
 
   const goto_userpage = () => {

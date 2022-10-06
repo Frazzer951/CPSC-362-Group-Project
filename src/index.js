@@ -12,13 +12,11 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter basename="/CPSC-362-Group-Project">
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter basename="/CPSC-362-Group-Project">
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </AuthProvider>
 );
