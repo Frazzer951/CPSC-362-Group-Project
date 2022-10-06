@@ -6,7 +6,7 @@ import sqlite3
 router = APIRouter()
 
 
-@router.get("/threads/")
+@router.get("/threads/", tags=["threads"])
 async def retrieve_all_threads():
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -19,7 +19,7 @@ async def retrieve_all_threads():
     return looking_for
 
 
-@router.get("/threads/{thread_id}")
+@router.get("/threads/{thread_id}", tags=["threads"])
 async def retrieve_specified_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -33,7 +33,7 @@ async def retrieve_specified_thread(thread_id: int):
     return looking_for
 
 
-@router.post("/threads/")
+@router.post("/threads/", tags=["threads"])
 async def create_thread(name: str, desc: str):
     con = sqlite3.connect("project.db")
     cur = con.cursor()

@@ -1,12 +1,17 @@
 from concurrent.futures import thread
 from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
+from pydantic import BaseModel
 from utils import row_to_dict
 import sqlite3
 
 router = APIRouter()
 
+class Comment(BaseModel):
+    user_id: int
+    post_id: int 
+    body: str
 
-@router.get("/comments/{post_id}")
+@router.get("/comments/{post_id}", tags=["comments"])
 async def retrieve_comments_from_post(post_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -22,14 +27,14 @@ async def retrieve_comments_from_post(post_id: int):
     return looking_for
 
 
-@router.post("/posts/{thread_id}")
-async def create_post_in_thread(thread_id: int, user_id: int, title: str, body: str):
+@router.post("/comments/", tags=["comments"])
+async def create_comment_on_post(comment: Comment):
     # We can use pydantic classes instead of so many arguments
     # Something we can do later
     con = sqlite3.connect("project.db")
     cur = con.cursor()
-    sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
-    cur.execute(sql_query, [thread_id, user_id, title, body])
+    sql_query = "INSERT INTO Comments(user_id, post_id, body) VALUES(?, ?, ?)"
+    cur.execute(sql_query, [comment.user_id, comment.post_id, comment.body])
     con.commit()
     con.close()
     return {"SUCCESS": True}
