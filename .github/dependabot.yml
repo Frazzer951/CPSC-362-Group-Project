@@ -9,6 +9,9 @@ updates:
       - dependency-type: "direct"
     commit-message:
       prefix: "dep:"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
