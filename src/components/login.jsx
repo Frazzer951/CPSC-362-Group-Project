@@ -27,10 +27,8 @@ export default function Login() {
         withCredentials: true,
       });
 
-      // console.log(response?.data);
-
-      const userID = response?.data?.userID;
-      const admin = response?.data?.isAdmin;
+      const userID = response.data.user_id;
+      const admin = response.data.admin;
       setAuth({ logged_in: true, admin, userID });
       localStorage.setItem("userID", userID);
       localStorage.setItem("isAdmin", admin);

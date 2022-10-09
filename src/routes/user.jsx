@@ -13,17 +13,19 @@ export default function User() {
       .get(`/users/${params.userID}`)
       .then((res) => {
         console.log(res);
-        //setThreads(res.data);
+        let username = res.data.username;
+        let about_me = res.data.about_me;
+        if (!about_me) {
+          about_me = "Write something about yourself!";
+        }
+        setUser({
+          username: username,
+          about_me: about_me,
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-
-    setUser({
-      username: "Username",
-      about_me:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus sit amet volutpat consequat mauris. Id cursus metus aliquam eleifend. Vel pharetra vel turpis nunc. Elit eget gravida cum sociis. Quisque sagittis purus sit amet volutpat consequat mauris nunc congue. Nisl suscipit adipiscing bibendum est. Adipiscing at in tellus integer feugiat scelerisque varius. Nisl pretium fusce id velit ut tortor. Sit amet commodo nulla facilisi. Ornare suspendisse sed nisi lacus sed.",
-    });
   }, [params]);
 
   return (
