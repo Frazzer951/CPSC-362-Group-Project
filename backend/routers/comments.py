@@ -1,15 +1,17 @@
-from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
+import sqlite3
+
+from fastapi import APIRouter
 from pydantic import BaseModel
 from utils import row_to_dict
-import sqlite3
 
 router = APIRouter()
 
+
 class Comment(BaseModel):
     user_id: int
-    post_id: int 
+    post_id: int
     body: str
+
 
 @router.get("/comments/{post_id}", tags=["comments"])
 async def retrieve_comments_from_post(post_id: int):
