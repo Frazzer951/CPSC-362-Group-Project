@@ -39,7 +39,7 @@ export default function User() {
           <Divider />
 
           <Paper elevation={2}>
-            <Typography variant="h6" sx={{ padding: ".1rem" }}>
+            <Typography variant="h6" sx={{ padding: "1rem" }}>
               {user.about_me}
             </Typography>
           </Paper>
