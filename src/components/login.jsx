@@ -24,7 +24,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (user == "" || pwd == "") {
+    if (user === "" || pwd === "") {
       setErrMsg("Missing Username or Password");
       return;
     }
