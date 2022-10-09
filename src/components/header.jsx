@@ -34,6 +34,7 @@ export default function Header() {
   };
 
   const goto_userpage = () => {
+    console.log(auth)
     navigate(`/user/${auth.userID}`);
   };
 

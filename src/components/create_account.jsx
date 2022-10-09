@@ -1,3 +1,4 @@
+import { Box, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import axios from "../api/axios";
@@ -14,6 +15,9 @@ export default function CreateAccount() {
   useEffect(() => {
     setErrMsg("");
   }, [user, pwd]);
+
+  const onUserChange = (e) => setUser(e.target.value);
+  const onPwdChange = (e) => setPwd(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,19 +53,33 @@ export default function CreateAccount() {
   };
 
   return (
-    <section>
+    <Box sx={{ display: "grid" }}>
       <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
       <p className={sucMsg ? "sucmsg" : "offscreen"}>{sucMsg}</p>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" autoComplete="off" onChange={(e) => setUser(e.target.value)} value={user} required />
+      <TextField
+        onChange={onUserChange}
+        value={user}
+        label={"Username"}
+        variant="filled"
+        margin="dense"
+        autoComplete="username"
+        required
+      />
+      <TextField
+        onChange={onPwdChange}
+        value={pwd}
+        label={"Password"}
+        variant="filled"
+        type="password"
+        margin="dense"
+        autoComplete="new-password"
+        required
+      />
 
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={pwd} required />
-
-        <button>Create Account</button>
-      </form>
-    </section>
+      <Button onClick={handleSubmit} variant="contained">
+        Create Account
+      </Button>
+    </Box>
   );
 }
