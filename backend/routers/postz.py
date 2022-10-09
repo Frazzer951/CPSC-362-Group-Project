@@ -1,7 +1,7 @@
-from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
-from utils import row_to_dict
 import sqlite3
+
+from fastapi import APIRouter
+from utils import row_to_dict
 
 router = APIRouter()
 

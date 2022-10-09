@@ -1,8 +1,8 @@
-from concurrent.futures import thread
-from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
+import sqlite3
+
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from utils import row_to_dict
-import sqlite3
 
 router = APIRouter()
 
@@ -49,9 +49,9 @@ async def create_user(user: User):
     return {"detail": "SUCCESS"}
 
 
-@router.get("/user/auth/", tags=["users"])
+@router.post("/user/auth/", tags=["users"])
 async def authenticate_user(user: User):
-    #TODO: Use FastAPI Authenitcation to authenticate the user securely
+    # TODO: Use FastAPI Authentication to authenticate the user securely
     # if user does not exist or password return 401
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
@@ -60,7 +60,5 @@ async def authenticate_user(user: User):
     sq = cur.execute(sql_query, [user.username, user.password])
     looking_for = sq.fetchone()
     if not looking_for:
-        raise HTTPException(
-            status_code=401, detail="Unauthorized"
-        )
+        raise HTTPException(status_code=401, detail="Unauthorized")
     return looking_for
