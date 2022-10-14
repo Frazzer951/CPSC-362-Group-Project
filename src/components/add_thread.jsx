@@ -1,6 +1,8 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 
+import axios from "../api/axios";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -23,6 +25,15 @@ export default function AddThread() {
 
     console.log(`threadName: ${threadName}`);
     console.log(`threadDesc: ${threadDesc}`);
+
+    axios
+      .post(`/threads/?name=${threadName}&desc=${threadDesc}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -36,7 +47,14 @@ export default function AddThread() {
           margin="dense"
           required
         />
-        <TextField onChange={onDescChange} value={threadDesc} label={"Thread Description"} variant="outlined" margin="dense" />
+        <TextField
+          onChange={onDescChange}
+          value={threadDesc}
+          label={"Thread Description"}
+          variant="outlined"
+          margin="dense"
+          required
+        />
 
         <Button onClick={handleSubmit} variant="contained">
           Create Thread
