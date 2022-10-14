@@ -1,12 +1,14 @@
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import axios from "../api/axios";
-import Thread from "../components/thread";
 import AddButton from "../components/add_button";
+import AddThread from "../components/add_thread";
+import Thread from "../components/thread";
 
 export default function Threads() {
   const [threads, setThreads] = useState();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     axios
@@ -18,10 +20,13 @@ export default function Threads() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [refresh]);
 
-  const onAddClick = () => {
-    console.log("clicked");
+  const [open, setOpen] = useState(false);
+  const onAddClick = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setRefresh(!refresh);
   };
 
   return (
@@ -41,6 +46,10 @@ export default function Threads() {
       ) : (
         <h2>Loading</h2>
       )}
+
+      <Modal open={open} onClose={handleClose}>
+        <AddThread />
+      </Modal>
 
       <AddButton onClick={onAddClick} />
     </div>
