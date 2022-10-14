@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { theme } from "./theme";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -19,6 +20,7 @@ root.render(
   <AuthProvider>
     <ThemeProvider theme={theme}>
       <BrowserRouter basename="/CPSC-362-Group-Project">
+        <CssBaseline />
         <App />
       </BrowserRouter>
     </ThemeProvider>

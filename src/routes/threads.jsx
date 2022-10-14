@@ -1,9 +1,9 @@
-import { Box, Divider, Typography, IconButton } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Add } from "@mui/icons-material";
 
 import axios from "../api/axios";
 import Thread from "../components/thread";
+import AddButton from "../components/add_button";
 
 export default function Threads() {
   const [threads, setThreads] = useState();
@@ -19,6 +19,10 @@ export default function Threads() {
         console.log(err);
       });
   }, []);
+
+  const onAddClick = () => {
+    console.log("clicked");
+  };
 
   return (
     <div>
@@ -38,13 +42,7 @@ export default function Threads() {
         <h2>Loading</h2>
       )}
 
-      <IconButton
-        sx={{ position: "absolute", bottom: 16, right: 16, backgroundColor: "secondary.main", color: "white" }}
-        disableRipple
-        size="large"
-      >
-        <Add fontSize="inherit" />
-      </IconButton>
+      <AddButton onClick={onAddClick} />
     </div>
   );
 }
