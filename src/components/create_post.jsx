@@ -26,9 +26,6 @@ export default function CreatePost(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(`Title: ${title}`);
-    console.log(`Body: ${body}`);
-
     axios
       .post(`/posts/${threadID}?user_id=${auth.userID}&title=${title}&body=${body}`)
       .then(function (response) {
@@ -48,7 +45,7 @@ export default function CreatePost(props) {
         <TextField onChange={onBodyChange} value={body} label={"Body"} variant="outlined" margin="dense" required />
 
         <Button onClick={handleSubmit} variant="contained">
-          Create Thread
+          Create Post
         </Button>
       </Box>
     </Container>

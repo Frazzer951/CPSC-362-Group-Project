@@ -48,7 +48,7 @@ export default function CreateComment(props) {
         <TextField onChange={onBodyChange} value={body} label={"Body"} variant="outlined" margin="dense" required />
 
         <Button onClick={handleSubmit} variant="contained">
-          Create Thread
+          Create Comment
         </Button>
       </Box>
     </Container>

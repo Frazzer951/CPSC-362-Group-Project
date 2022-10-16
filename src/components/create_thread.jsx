@@ -23,9 +23,6 @@ export default function CreateThread() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(`threadName: ${threadName}`);
-    console.log(`threadDesc: ${threadDesc}`);
-
     axios
       .post(`/threads/?name=${threadName}&desc=${threadDesc}`)
       .then(function (response) {
