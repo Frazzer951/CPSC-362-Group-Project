@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField } from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 import axios from "../api/axios";
@@ -39,6 +39,8 @@ export default function CreateThread() {
   return (
     <Container sx={style} maxWidth="sm">
       <Box sx={{ display: "grid" }}>
+        <Typography variant="h3">Create Thread</Typography>
+
         <TextField
           onChange={onNameChange}
           value={threadName}
