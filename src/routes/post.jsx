@@ -1,18 +1,22 @@
-import { Card, CardContent, Container, Divider, Typography } from "@mui/material";
+import { Card, CardContent, Container, Divider, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import axios from "../api/axios";
+import AddButton from "../components/add_button";
 import Comment from "../components/comment";
+import CreateComment from "../components/create_comment";
 
 export default function Post() {
-  let params = useParams();
+  let { postID } = useParams();
   const [post, setPost] = useState();
   const [comments, setComments] = useState();
+  const [open, setOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`/post/${params.postID}`)
+      .get(`/post/${postID}`)
       .then((res) => {
         console.log(res);
         setPost(res.data);
@@ -22,7 +26,7 @@ export default function Post() {
       });
 
     axios
-      .get(`/comments/${params.postID}`)
+      .get(`/comments/${postID}`)
       .then((res) => {
         console.log(res);
         setComments(res.data);
@@ -30,7 +34,13 @@ export default function Post() {
       .catch((err) => {
         console.log(err);
       });
-  }, [params.postID]);
+  }, [postID, refresh]);
+
+  const onAddClick = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setRefresh(!refresh);
+  };
 
   return (
     <div>
@@ -59,6 +69,12 @@ export default function Post() {
           <h2>Loading</h2>
         )}
       </Container>
+
+      <Modal open={open} onClose={handleClose}>
+        <CreateComment postID={postID} />
+      </Modal>
+
+      <AddButton onClick={onAddClick} />
     </div>
   );
 }
