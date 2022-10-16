@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
-import AddThread from "../components/add_thread";
+import CreateThread from "../components/create_thread";
 import Thread from "../components/thread";
 
 export default function Threads() {
@@ -48,7 +48,7 @@ export default function Threads() {
       )}
 
       <Modal open={open} onClose={handleClose}>
-        <AddThread />
+        <CreateThread />
       </Modal>
 
       <AddButton onClick={onAddClick} />
