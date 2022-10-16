@@ -1,18 +1,22 @@
-import { Divider, Typography } from "@mui/material";
+import { Divider, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import axios from "../api/axios";
+import AddButton from "../components/add_button";
+import CreatePost from "../components/create_post";
 import Post from "../components/post";
 
 export default function Thread() {
-  let params = useParams();
+  let { threadID } = useParams();
   const [thread, setThread] = useState();
   const [posts, setPosts] = useState();
+  const [open, setOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`/threads/${params.threadID}`)
+      .get(`/threads/${threadID}`)
       .then((res) => {
         console.log(res);
         setThread(res.data);
@@ -22,7 +26,7 @@ export default function Thread() {
       });
 
     axios
-      .get(`/posts/${params.threadID}`)
+      .get(`/posts/${threadID}`)
       .then((res) => {
         console.log(res);
         setPosts(res.data);
@@ -30,7 +34,13 @@ export default function Thread() {
       .catch((err) => {
         console.log(err);
       });
-  }, [params.threadID]);
+  }, [threadID, refresh]);
+
+  const onAddClick = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setRefresh(!refresh);
+  };
 
   return (
     <div>
@@ -55,6 +65,12 @@ export default function Thread() {
       ) : (
         <h2>Loading</h2>
       )}
+
+      <Modal open={open} onClose={handleClose}>
+        <CreatePost threadID={threadID} />
+      </Modal>
+
+      <AddButton onClick={onAddClick} />
     </div>
   );
 }
