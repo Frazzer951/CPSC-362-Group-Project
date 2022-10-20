@@ -19,9 +19,7 @@ export default function AddButton(props) {
         },
       }}
       size="large"
-      onClick={() => {
-        onClick();
-      }}
+      onClick={() => onClick()}
     >
       <Add fontSize="inherit" />
     </IconButton>

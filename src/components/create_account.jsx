@@ -31,10 +31,6 @@ export default function CreateAccount() {
 
       console.log(response?.data);
 
-      // const userID = response?.data?.userID;
-      // const admin = response?.data?.isAdmin;
-      // setAuth({ user, logged_in: true, admin, userID });
-
       setUser("");
       setPwd("");
       setSucMsg("Account Successfully Created");
