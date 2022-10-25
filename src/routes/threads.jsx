@@ -1,6 +1,7 @@
 import { Box, Divider, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreateThread from "../components/create_thread";
@@ -9,6 +10,7 @@ import Thread from "../components/thread";
 export default function Threads() {
   const [threads, setThreads] = useState();
   const [refresh, setRefresh] = useState(false);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -35,6 +37,10 @@ export default function Threads() {
         Threads
       </Typography>
 
+      <Typography variant="h4" sx={{ padding: "1rem" }}>
+        {JSON.stringify(auth)}
+      </Typography>
+
       <Divider />
 
       {threads ? (
@@ -47,11 +53,17 @@ export default function Threads() {
         <h2>Loading</h2>
       )}
 
-      <Modal open={open} onClose={handleClose}>
-        <CreateThread />
-      </Modal>
+      {auth.logged_in && auth.admin ? (
+        <>
+          <Modal open={open} onClose={handleClose}>
+            <CreateThread />
+          </Modal>
 
-      <AddButton onClick={onAddClick} />
+          <AddButton onClick={onAddClick} />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
