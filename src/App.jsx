@@ -4,10 +4,10 @@ import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/header";
 import AuthContext from "./context/AuthProvider";
-import Post from "./routes/post";
-import Thread from "./routes/thread";
-import Threads from "./routes/threads";
-import User from "./routes/user";
+import Post from "./routes/post_route";
+import Thread from "./routes/thread_route";
+import Threads from "./routes/threads_route";
+import User from "./routes/user_route";
 
 export default function App() {
   const { setAuth } = useContext(AuthContext);
