@@ -8,7 +8,7 @@ export default function AddButton(props) {
   return (
     <IconButton
       sx={{
-        position: "absolute",
+        position: "fixed",
         bottom: 16,
         right: 16,
         backgroundColor: "secondary.main",

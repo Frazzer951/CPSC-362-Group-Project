@@ -10,7 +10,18 @@ import Thread from "../components/thread";
 export default function Threads() {
   const [threads, setThreads] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [display, setDisplay] = useState(false);
   const { auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (auth.logged_in && auth.isAdmin === 1) {
+      console.log("Setting to true");
+      setDisplay(true);
+    } else {
+      console.log("Setting to false");
+      setDisplay(false);
+    }
+  }, [auth]);
 
   useEffect(() => {
     axios
@@ -49,7 +60,7 @@ export default function Threads() {
         <h2>Loading</h2>
       )}
 
-      {auth.logged_in && auth.admin ? (
+      {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
             <CreateThread />
