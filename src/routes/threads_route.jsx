@@ -37,10 +37,6 @@ export default function Threads() {
         Threads
       </Typography>
 
-      <Typography variant="h4" sx={{ padding: "1rem" }}>
-        {JSON.stringify(auth)}
-      </Typography>
-
       <Divider />
 
       {threads ? (
