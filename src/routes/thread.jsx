@@ -1,7 +1,8 @@
 import { Divider, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreatePost from "../components/create_post";
@@ -13,6 +14,18 @@ export default function Thread() {
   const [posts, setPosts] = useState();
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const { auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (auth.logged_in) {
+      console.log("Setting to true");
+      setDisplay(true);
+    } else {
+      console.log("Setting to false");
+      setDisplay(false);
+    }
+  }, [auth]);
 
   useEffect(() => {
     axios
@@ -66,11 +79,17 @@ export default function Thread() {
         <h2>Loading</h2>
       )}
 
-      <Modal open={open} onClose={handleClose}>
-        <CreatePost threadID={threadID} />
-      </Modal>
+      {display ? (
+        <>
+          <Modal open={open} onClose={handleClose}>
+            <CreatePost threadID={threadID} />
+          </Modal>
 
-      <AddButton onClick={onAddClick} />
+          <AddButton onClick={onAddClick} />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
