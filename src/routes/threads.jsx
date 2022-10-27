@@ -1,11 +1,11 @@
 import { Box, Divider, Modal, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 
-import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreateThread from "../components/create_thread";
 import Thread from "../components/thread";
+import AuthContext from "../context/AuthProvider";
 
 export default function Threads() {
   const [threads, setThreads] = useState();

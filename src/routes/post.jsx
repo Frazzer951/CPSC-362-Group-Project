@@ -2,11 +2,11 @@ import { Card, CardContent, Container, Divider, Modal, Typography } from "@mui/m
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import Comment from "../components/comment";
 import CreateComment from "../components/create_comment";
+import AuthContext from "../context/AuthProvider";
 
 export default function Post() {
   let { postID } = useParams();

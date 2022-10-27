@@ -2,11 +2,11 @@ import { Divider, Modal, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreatePost from "../components/create_post";
 import Post from "../components/post";
+import AuthContext from "../context/AuthProvider";
 
 export default function Thread() {
   let { threadID } = useParams();
