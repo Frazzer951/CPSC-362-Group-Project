@@ -63,7 +63,7 @@ export default function Threads() {
       {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
-            <CreateThread />
+            <CreateThread onFinish={handleClose} />
           </Modal>
 
           <AddButton onClick={onAddClick} />
