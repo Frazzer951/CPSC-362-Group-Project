@@ -86,7 +86,7 @@ export default function Post() {
       {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
-            <CreateComment postID={postID} />
+            <CreateComment postID={postID} onFinish={handleClose} />
           </Modal>
 
           <AddButton onClick={onAddClick} />

@@ -15,7 +15,7 @@ const style = {
 };
 
 export default function CreateComment(props) {
-  let { postID } = props;
+  let { postID, onFinish } = props;
   const { auth } = useContext(AuthContext);
   const [body, setBody] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -48,7 +48,7 @@ export default function CreateComment(props) {
       return;
     }
 
-    axios
+    await axios
       .post("/comments", {
         user_id: auth.userID,
         post_id: postID,
@@ -60,6 +60,8 @@ export default function CreateComment(props) {
       .catch(function (error) {
         console.log(error);
       });
+
+    onFinish();
   };
 
   return (
