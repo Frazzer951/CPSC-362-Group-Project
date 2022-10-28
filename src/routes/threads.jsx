@@ -1,14 +1,27 @@
 import { Box, Divider, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreateThread from "../components/create_thread";
 import Thread from "../components/thread";
+import AuthContext from "../context/AuthProvider";
 
 export default function Threads() {
   const [threads, setThreads] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const { auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (auth.logged_in && auth.isAdmin === 1) {
+      console.log("Setting to true");
+      setDisplay(true);
+    } else {
+      console.log("Setting to false");
+      setDisplay(false);
+    }
+  }, [auth]);
 
   useEffect(() => {
     axios
@@ -47,11 +60,17 @@ export default function Threads() {
         <h2>Loading</h2>
       )}
 
-      <Modal open={open} onClose={handleClose}>
-        <CreateThread />
-      </Modal>
+      {display ? (
+        <>
+          <Modal open={open} onClose={handleClose}>
+            <CreateThread onFinish={handleClose} />
+          </Modal>
 
-      <AddButton onClick={onAddClick} />
+          <AddButton onClick={onAddClick} />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

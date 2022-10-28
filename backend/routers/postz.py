@@ -1,6 +1,7 @@
 import sqlite3
 
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 from utils import row_to_dict
 
@@ -39,14 +40,18 @@ async def retrieve_specified_post(post_id: int):
     return looking_for
 
 
+class Post(BaseModel):
+    user_id: int
+    title: str
+    body: str
+
+
 @router.post("/posts/{thread_id}", tags=["posts"])
-async def create_post_in_thread(thread_id: int, user_id: int, title: str, body: str):
-    # We can use pydantic classes instead of so many arguments
-    # Something we can do later
+async def create_post_in_thread(thread_id: int, post: Post):
     con = sqlite3.connect("project.db")
     cur = con.cursor()
     sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
-    cur.execute(sql_query, [thread_id, user_id, title, body])
+    cur.execute(sql_query, [thread_id, post.user_id, post.title, post.body])
     con.commit()
     con.close()
     return {"SUCCESS": True}
