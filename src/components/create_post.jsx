@@ -15,7 +15,7 @@ const style = {
 };
 
 export default function CreatePost(props) {
-  let { threadID } = props;
+  let { threadID, onFinish } = props;
   const { auth } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -27,7 +27,6 @@ export default function CreatePost(props) {
 
   const titleLimit = 128;
   const bodyLimit = 1024;
-
 
   useEffect(() => {
     setErrMsg("");
@@ -76,6 +75,8 @@ export default function CreatePost(props) {
       .catch(function (error) {
         console.log(error);
       });
+
+    onFinish();
   };
 
   return (

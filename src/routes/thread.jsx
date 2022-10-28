@@ -82,7 +82,7 @@ export default function Thread() {
       {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
-            <CreatePost threadID={threadID} />
+            <CreatePost threadID={threadID} onFinish={handleClose} />
           </Modal>
 
           <AddButton onClick={onAddClick} />
