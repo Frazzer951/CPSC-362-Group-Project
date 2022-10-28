@@ -61,7 +61,7 @@ export default function CreateThread(props) {
       return;
     }
 
-    axios
+    await axios
       .post(`/threads/?name=${threadName}&desc=${threadDesc}`)
       .then(function (response) {
         console.log(response);

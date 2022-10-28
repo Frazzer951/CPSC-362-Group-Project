@@ -1,5 +1,5 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
@@ -63,7 +63,7 @@ export default function CreatePost(props) {
       return;
     }
 
-    axios
+    await axios
       .post(`/posts/${threadID}`, {
         user_id: auth.userID,
         title: title,
