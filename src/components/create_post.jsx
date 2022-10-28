@@ -20,14 +20,14 @@ export default function CreatePost(props) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [errMsg, setErrMsg] = useState("");
-
-  const titleLimit = 128;
-  const bodyLimit = 1024;
-
   const [titleError, setTitleError] = useState(false);
   const [titleErrorText, setTitleErrorText] = useState("");
   const [bodyError, setBodyError] = useState(false);
   const [bodyErrorText, setBodyErrorText] = useState("");
+
+  const titleLimit = 128;
+  const bodyLimit = 1024;
+
 
   useEffect(() => {
     setErrMsg("");
