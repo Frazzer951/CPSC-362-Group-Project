@@ -64,17 +64,12 @@ export default function CreatePost(props) {
       return;
     }
 
-    //let obj = {
-    //  title,
-    //  body,
-    //};
-
-    //console.log(title);
-    //console.log(body);
-    //console.log(obj);
-
     axios
-      .post(`/posts/${threadID}?user_id=${auth.userID}&title=${title}&body=${body}`)
+      .post(`/posts/${threadID}`, {
+        user_id: auth.userID,
+        title: title,
+        body: body,
+      })
       .then(function (response) {
         console.log(response);
       })
