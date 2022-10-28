@@ -2,6 +2,7 @@ import sqlite3
 
 from fastapi import APIRouter
 from pydantic import BaseModel
+
 from utils import row_to_dict
 
 router = APIRouter()
@@ -31,8 +32,6 @@ async def retrieve_comments_from_post(post_id: int):
 
 @router.post("/comments/", tags=["comments"])
 async def create_comment_on_post(comment: Comment):
-    # We can use pydantic classes instead of so many arguments
-    # Something we can do later
     con = sqlite3.connect("project.db")
     cur = con.cursor()
     sql_query = "INSERT INTO Comments(user_id, post_id, body) VALUES(?, ?, ?)"
