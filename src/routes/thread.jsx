@@ -73,7 +73,7 @@ export default function Thread() {
 
       {posts ? (
         posts.map((post) => {
-          return <Post post={post} />;
+          return <Post post={post} key={`post-${post.post_id}-${post.title}`} />;
         })
       ) : (
         <h2>Loading</h2>

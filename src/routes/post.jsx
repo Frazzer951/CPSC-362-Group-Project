@@ -75,9 +75,9 @@ export default function Post() {
 
       <Container maxWidth="lg">
         {comments ? (
-          comments.map((comment) => {
-            return <Comment comment={comment} />;
-          })
+          comments.map((comment, index) => {
+            return <Comment comment={comment} key={`comment-${index}`} />;
+          }) // TODO: Use comment_id in key
         ) : (
           <h2>Loading</h2>
         )}

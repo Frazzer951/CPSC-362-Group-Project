@@ -53,7 +53,7 @@ export default function Threads() {
       {threads ? (
         <Box>
           {threads.map((thread) => (
-            <Thread thread={thread} />
+            <Thread thread={thread} key={`thread-${thread.thread_id}-${thread.name}`} />
           ))}
         </Box>
       ) : (
