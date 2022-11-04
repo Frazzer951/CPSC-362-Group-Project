@@ -101,3 +101,23 @@ async def edit_post_title(username: str, title: str, post_id: int, thread_id: in
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
+@router.delete("/posts/", tags=["posts"])
+async def delete_post(username: str, post_id: int):
+    con = sqlite3.connect("project.db")
+    # ncon.row_factory = row_to_dict
+    cur = con.cursor()
+    
+    sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
+    sq = cur.execute(sql_query)
+    looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(status_code=404, detail="User not found")
+    user_id = looking_for[0]
+    sql_query = f"""DELETE FROM Posts 
+                    WHERE user_id = {user_id} AND 
+                        post_id = {post_id}"""
+    cur.execute(sql_query)
+    con.commit()
+    con.close()
+    return {"SUCCESS": True}

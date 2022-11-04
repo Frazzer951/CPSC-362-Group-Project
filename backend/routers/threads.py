@@ -92,12 +92,11 @@ async def delete_thread(username: str, thread_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
     cur = con.cursor()
-    try:
-        sql_query = f"SELECT user_id, admin FROM Users WHERE username = '{username}'"
-    except:
-        raise HTTPException(status_code=404, detail="User not found")
+    sql_query = f"SELECT user_id, admin FROM Users WHERE username = '{username}'"
     sq = cur.execute(sql_query)
     looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(status_code=404, detail="User not found")
     user_id, is_admin = looking_for
     if not is_admin:
         raise HTTPException(status_code=401, detail="User not Authorized")
