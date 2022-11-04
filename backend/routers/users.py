@@ -20,6 +20,8 @@ async def retrieve_user_data(user_id: int):
     # Get the list of tuples generated from the query
     con.close()
     return looking_for
+# grabs all comments and posts made by a user
+
 
 
 class User(BaseModel):
@@ -63,3 +65,22 @@ async def authenticate_user(user: User):
     if not looking_for:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return looking_for
+
+@router.patch("/user/about-me/", tags=["users"])
+async def edit_about_me(username: str, text: str):
+    con = sqlite3.connect("project.db")  # con is connection
+    con.row_factory = row_to_dict
+    cur = con.cursor()  # cur is cursor
+    sql_query = f"""UPDATE Users 
+                    SET about_me = '{text}' 
+                    WHERE username = '{username}'"""
+    # try:
+    sq = cur.execute(sql_query)
+    con.commit()
+    # except:
+    #      con.close()
+    #      raise HTTPException(status_code=400, detail="Bad Request")
+    con.close()
+    return {"detail": "SUCCESS"}
+
+
