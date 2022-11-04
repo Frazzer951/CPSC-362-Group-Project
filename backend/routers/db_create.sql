@@ -6,7 +6,7 @@ CREATE TABLE Users (
     about_me VARCHAR(1024),
     admin BOOL
 );
-
+SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO Users(username, password, admin) VALUES("faker10", "12345", 1);
 
@@ -15,6 +15,7 @@ CREATE TABLE Threads (
     name VARCHAR(128),
     description VARCHAR(128)
 );
+INSERT INTO Threads(name, description) VALUES("Thread Name", "this is my thread");
 
 CREATE TABLE Posts(
     post_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,6 +26,8 @@ CREATE TABLE Posts(
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_thread_id FOREIGN KEY (thread_id) REFERENCES Threads(thread_id)
 );
+INSERT INTO Posts(user_id, thread_id, title, body) VALUES(1, 1, "A Title", "this is a cool post");
+
 
 CREATE TABLE Comments(
     comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +37,7 @@ CREATE TABLE Comments(
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id)  ON DELETE CASCADE
 );
-INSERT INTO Comments(user_id, post_id, body) VALUES(1, 1, "I like spamming");
+INSERT INTO Comments(user_id, post_id, body) VALUES(2, 2, "I like spamming");
 
 
 
