@@ -50,6 +50,7 @@ class Post(BaseModel):
 async def create_post_in_thread(thread_id: int, post: Post):
     con = sqlite3.connect("project.db")
     cur = con.cursor()
+    """NEED TO CHECK IF USER EXISTS"""
     sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
     cur.execute(sql_query, [thread_id, post.user_id, post.title, post.body])
     con.commit()

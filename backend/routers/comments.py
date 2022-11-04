@@ -62,3 +62,26 @@ async def edit_comment(username: str, body: str, comment_id: int, post_id: int):
     con.close()
     return {"SUCCESS": True}
 
+@router.delete("/comments/", tags=["comments"])
+async def delete_comment(username: str, comment_id: int):
+    con = sqlite3.connect("project.db")
+    # ncon.row_factory = row_to_dict
+    cur = con.cursor()
+    try:
+        sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
+    except:
+        raise HTTPException(status_code=404, detail="User not found")
+    sq = cur.execute(sql_query)
+    looking_for = sq.fetchone()
+    user_id = looking_for[0]
+    sql_query = f"""DELETE FROM Comments 
+                    WHERE user_id = {user_id} AND 
+                        comment_id = {comment_id}"""
+    cur.execute(sql_query)
+    con.commit()
+    con.close()
+    return {"SUCCESS": True}
+
+
+# db_create.sql allows me to insert into comments even if I dont use a
+# correct foreign key value. kinda weird 

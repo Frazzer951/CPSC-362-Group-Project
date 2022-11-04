@@ -22,9 +22,8 @@ CREATE TABLE Posts(
     thread_id INT NOT NULL,
     title VARCHAR(128),
     body VARCHAR(1024),
-    PRIMARY KEY (post_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (thread_id) REFERENCES Threads(thread_id)
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_thread_id FOREIGN KEY (thread_id) REFERENCES Threads(thread_id)
 );
 
 CREATE TABLE Comments(
@@ -32,11 +31,11 @@ CREATE TABLE Comments(
     user_id INT NOT NULL,
     post_id INT NOT NULL,
     body VARCHAR(1024),
-    PRIMARY KEY (comment_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id)  ON DELETE CASCADE
 );
 INSERT INTO Comments(user_id, post_id, body) VALUES(1, 1, "I like spamming");
+
 
 
 
