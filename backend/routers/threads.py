@@ -1,6 +1,6 @@
 import sqlite3
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from utils import row_to_dict
 
@@ -42,3 +42,50 @@ async def create_thread(name: str, desc: str):
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
+@router.patch("/threads/edit/name/", tags=["threads"])
+async def edit_thread_name(username: str, name: str, thread_id: int):
+    con = sqlite3.connect("project.db")
+    # ncon.row_factory = row_to_dict
+    cur = con.cursor()
+    try:
+        sql_query = f"SELECT user_id, admin FROM Users WHERE username = '{username}'"
+        sq = cur.execute(sql_query)
+    except:
+        raise HTTPException(status_code=404, detail="User not found")
+    looking_for = sq.fetchone()
+    user_id, is_admin = looking_for
+    if not is_admin:
+        raise HTTPException(status_code=401, detail="User not Authorized")
+    sql_query = f"""UPDATE Threads 
+                    SET name = '{name}' 
+                    WHERE thread_id = {thread_id}"""
+    cur.execute(sql_query)
+    con.commit()
+    con.close()
+    return {"SUCCESS": True}
+
+@router.patch("/threads/edit/description/", tags=["threads"])
+async def edit_thread_description(username: str, description: str, thread_id: int):
+    con = sqlite3.connect("project.db")
+    # ncon.row_factory = row_to_dict
+    cur = con.cursor()
+    try:
+        sql_query = f"SELECT user_id, admin FROM Users WHERE username = '{username}'"
+        sq = cur.execute(sql_query)
+    except:
+        raise HTTPException(status_code=404, detail="User not found")
+    looking_for = sq.fetchone()
+    user_id, is_admin = looking_for
+    if not is_admin:
+        raise HTTPException(status_code=401, detail="User not Authorized")
+    sql_query = f"""UPDATE Threads 
+                    SET description = '{description}' 
+                    WHERE thread_id = {thread_id}"""
+    cur.execute(sql_query)
+    con.commit()
+    con.close()
+    return {"SUCCESS": True}
+
+
+"""How can someone edit threads if they aren't tied to the user?"""

@@ -51,16 +51,13 @@ async def edit_comment(username: str, body: str, comment_id: int, post_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     sq = cur.execute(sql_query)
     looking_for = sq.fetchone()
-    user_id = looking_for
-    try:
-        sql_query = f"""UPDATE Comments 
-                        SET body = '{body}' 
-                        WHERE user_id = '{user_id}' AND 
-                            post_id = '{post_id}' AND
-                            comment_id = {comment_id}"""
-        cur.execute(sql_query)
-    except:
-        raise HTTPException(status_code=404, detail="User not found")
+    user_id = looking_for[0]
+    sql_query = f"""UPDATE Comments 
+                    SET body = '{body}' 
+                    WHERE user_id = {user_id} AND 
+                        post_id = {post_id} AND
+                        comment_id = {comment_id}"""
+    cur.execute(sql_query)
     con.commit()
     con.close()
     return {"SUCCESS": True}

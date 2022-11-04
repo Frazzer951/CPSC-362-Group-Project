@@ -57,30 +57,30 @@ async def create_post_in_thread(thread_id: int, post: Post):
     return {"SUCCESS": True}
 
 @router.patch("/posts/edit/body/", tags=["posts"])
-async def edit_comment(username: str, body: str, post_id: int, thread_id: int):
+async def edit_post_body(username: str, body: str, post_id: int, thread_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
     cur = con.cursor()
     try:
         sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
+        sq = cur.execute(sql_query)
     except:
-        raise HTTPException(status_code=404, detail="User not found")
-    sq = cur.execute(sql_query)
+        raise HTTPException(status_code=404, detail="User not found")   
     looking_for = sq.fetchone()
-    user_id = looking_for
+    user_id = looking_for[0]
     # print(looking_for)
     sql_query = f"""UPDATE Posts 
                     SET body = '{body}' 
-                    WHERE user_id = '{user_id}' AND 
-                          post_id = '{post_id}' AND
-                          thread_id = '{thread_id}'"""
-    cur.execute(sql_query)
+                    WHERE user_id = {user_id} AND 
+                          post_id = {post_id} AND
+                          thread_id = {thread_id}"""
+    sq = cur.execute(sql_query)
     con.commit()
     con.close()
     return {"SUCCESS": True}
 
 @router.patch("/posts/edit/title/", tags=["posts"])
-async def edit_comment(username: str, title: str, post_id: int, thread_id: int):
+async def edit_post_title(username: str, title: str, post_id: int, thread_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
     cur = con.cursor()
@@ -90,13 +90,12 @@ async def edit_comment(username: str, title: str, post_id: int, thread_id: int):
     except:
         raise HTTPException(status_code=404, detail="User not found")
     looking_for = sq.fetchone()
-    user_id = looking_for
-    print(f"-----------\n {looking_for} \n ------------")
+    user_id = looking_for[0]
     sql_query = f"""UPDATE Posts 
-                    SET body = '{title}' 
-                    WHERE user_id = '{user_id}' AND 
-                          post_id = '{post_id}' AND
-                          thread_id = '{thread_id}'"""
+                    SET title = '{title}' 
+                    WHERE user_id = {user_id} AND 
+                          post_id = {post_id} AND
+                          thread_id = {thread_id}"""
     cur.execute(sql_query)
     con.commit()
     con.close()
