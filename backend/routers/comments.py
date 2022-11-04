@@ -67,16 +67,16 @@ async def delete_comment(username: str, comment_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
     cur = con.cursor()
-    try:
-        sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
-    except:
-        raise HTTPException(status_code=404, detail="User not found")
+    sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
     sq = cur.execute(sql_query)
     looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for[0]
     sql_query = f"""DELETE FROM Comments 
                     WHERE user_id = {user_id} AND 
                         comment_id = {comment_id}"""
+    
     cur.execute(sql_query)
     con.commit()
     con.close()
@@ -85,3 +85,4 @@ async def delete_comment(username: str, comment_id: int):
 
 # db_create.sql allows me to insert into comments even if I dont use a
 # correct foreign key value. kinda weird 
+"""DELETE still remove if it exists with a return true, not sure if we want that"""
