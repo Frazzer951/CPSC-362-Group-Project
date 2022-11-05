@@ -1,8 +1,5 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-
-import axios from "../api/axios";
-import AuthContext from "../context/AuthProvider";
+import { useEffect, useState } from "react";
 
 const style = {
   position: "absolute",
@@ -16,7 +13,6 @@ const style = {
 
 export default function EditPost(props) {
   let { post, onFinish } = props;
-  const { auth } = useContext(AuthContext);
   const [title, setTitle] = useState(post.title);
   const [body, setBody] = useState(post.body);
   const [errMsg, setErrMsg] = useState("");
