@@ -88,27 +88,3 @@ export default function Thread(props) {
     </Box>
   );
 }
-
-/*
-
-<Link style={{ textDecoration: "none" }} to={`/${thread.thread_id}`}>
-        <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {thread.name}
-            </Typography>
-            <Typography variant="body2">{thread.description}</Typography>
-          </CardContent>
-          <CardActions>
-            {display ? (
-              <IconButton onClick={handleClick}>
-                <MoreVertIcon />
-              </IconButton>
-            ) : (
-              <></>
-            )}
-          </CardActions>
-        </Card>
-      </Link>
-
-*/
