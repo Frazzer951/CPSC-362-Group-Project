@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem, Modal, Paper, Typography, Card, CardContent } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
