@@ -7,7 +7,7 @@ import CreateThread from "../components/create_thread";
 import Thread from "../components/thread";
 import AuthContext from "../context/AuthProvider";
 
-export default function Threads() {
+export default function ThreadsPage() {
   const [threads, setThreads] = useState();
   const [refresh, setRefresh] = useState(false);
   const [display, setDisplay] = useState(false);

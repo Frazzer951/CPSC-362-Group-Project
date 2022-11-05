@@ -7,7 +7,7 @@ import axios from "../api/axios";
 import EditAboutMe from "../components/edit_about_me";
 import AuthContext from "../context/AuthProvider";
 
-export default function User() {
+export default function UserPage() {
   let { userID } = useParams();
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);

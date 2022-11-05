@@ -4,10 +4,10 @@ import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/header";
 import AuthContext from "./context/AuthProvider";
-import Post from "./routes/post";
-import Thread from "./routes/thread";
-import Threads from "./routes/threads";
-import User from "./routes/user";
+import PostPage from "./routes/postPage";
+import ThreadPage from "./routes/threadPage";
+import ThreadsPage from "./routes/threadsPage";
+import UserPage from "./routes/userPage";
 
 export default function App() {
   const { setAuth } = useContext(AuthContext);
@@ -26,10 +26,10 @@ export default function App() {
       <Header />
       <Container maxWidth="lg">
         <Routes>
-          <Route path="/" element={<Threads />} />
-          <Route path="/:threadID" element={<Thread />} />
-          <Route path="/:threadID/:postID" element={<Post />} />
-          <Route path="/user/:userID" element={<User />} />
+          <Route path="/" element={<ThreadsPage />} />
+          <Route path="/:threadID" element={<ThreadPage />} />
+          <Route path="/:threadID/:postID" element={<PostPage />} />
+          <Route path="/user/:userID" element={<UserPage />} />
           <Route
             path="*"
             element={

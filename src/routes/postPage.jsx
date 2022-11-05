@@ -1,17 +1,18 @@
-import { Divider, Modal, Typography } from "@mui/material";
+import { Card, CardContent, Container, Divider, Modal, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import Post from "../components/post";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
-import CreatePost from "../components/create_post";
-import Post from "../components/postLink";
+import Comment from "../components/comment";
+import CreateComment from "../components/create_comment";
 import AuthContext from "../context/AuthProvider";
 
-export default function Thread() {
-  let { threadID } = useParams();
-  const [thread, setThread] = useState();
-  const [posts, setPosts] = useState();
+export default function PostPage() {
+  let { postID } = useParams();
+  const [post, setPost] = useState();
+  const [comments, setComments] = useState();
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [display, setDisplay] = useState(false);
@@ -29,25 +30,25 @@ export default function Thread() {
 
   useEffect(() => {
     axios
-      .get(`/threads/${threadID}`)
+      .get(`/post/${postID}`)
       .then((res) => {
         console.log(res);
-        setThread(res.data);
+        setPost(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
 
     axios
-      .get(`/posts/${threadID}`)
+      .get(`/comments/${postID}`)
       .then((res) => {
         console.log(res);
-        setPosts(res.data);
+        setComments(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [threadID, refresh]);
+  }, [postID, refresh]);
 
   const onAddClick = () => setOpen(true);
   const handleClose = () => {
@@ -57,32 +58,24 @@ export default function Thread() {
 
   return (
     <div>
-      {thread ? (
-        <>
-          <Typography variant="h3" sx={{ paddingTop: "1rem" }}>
-            {thread.name}
-          </Typography>
-          <Typography variant="h6" sx={{ padding: ".1rem" }}>
-            {thread.description}
-          </Typography>
-        </>
-      ) : (
-        <h2>Loading</h2>
-      )}
+      {post ? <Post post={post} /> : <h2>Loading</h2>}
+
       <Divider />
 
-      {posts ? (
-        posts.map((post) => {
-          return <Post post={post} key={`post-${post.post_id}-${post.title}`} />;
-        })
-      ) : (
-        <h2>Loading</h2>
-      )}
+      <Container maxWidth="lg">
+        {comments ? (
+          comments.map((comment, index) => {
+            return <Comment comment={comment} key={`comment-${index}`} />;
+          }) // TODO: Use comment_id in key
+        ) : (
+          <h2>Loading</h2>
+        )}
+      </Container>
 
       {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
-            <CreatePost threadID={threadID} onFinish={handleClose} />
+            <CreateComment postID={postID} onFinish={handleClose} />
           </Modal>
 
           <AddButton onClick={onAddClick} />

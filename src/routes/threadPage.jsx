@@ -1,17 +1,17 @@
-import { Card, CardContent, Container, Divider, Modal, Typography } from "@mui/material";
+import { Divider, Modal, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
-import Comment from "../components/comment";
-import CreateComment from "../components/create_comment";
+import CreatePost from "../components/create_post";
+import Post from "../components/postLink";
 import AuthContext from "../context/AuthProvider";
 
-export default function Post() {
-  let { postID } = useParams();
-  const [post, setPost] = useState();
-  const [comments, setComments] = useState();
+export default function ThreadPage() {
+  let { threadID } = useParams();
+  const [thread, setThread] = useState();
+  const [posts, setPosts] = useState();
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [display, setDisplay] = useState(false);
@@ -29,25 +29,25 @@ export default function Post() {
 
   useEffect(() => {
     axios
-      .get(`/post/${postID}`)
+      .get(`/threads/${threadID}`)
       .then((res) => {
         console.log(res);
-        setPost(res.data);
+        setThread(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
 
     axios
-      .get(`/comments/${postID}`)
+      .get(`/posts/${threadID}`)
       .then((res) => {
         console.log(res);
-        setComments(res.data);
+        setPosts(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [postID, refresh]);
+  }, [threadID, refresh]);
 
   const onAddClick = () => setOpen(true);
   const handleClose = () => {
@@ -57,36 +57,32 @@ export default function Post() {
 
   return (
     <div>
-      {post ? (
-        <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
-          <CardContent>
-            <Typography variant="body2">{post.username}</Typography>
-            <Typography variant="h3" component="div">
-              {post.title}
-            </Typography>
-            <Typography variant="body1">{post.body}</Typography>
-          </CardContent>
-        </Card>
+      {thread ? (
+        <>
+          <Typography variant="h3" sx={{ paddingTop: "1rem" }}>
+            {thread.name}
+          </Typography>
+          <Typography variant="h6" sx={{ padding: ".1rem" }}>
+            {thread.description}
+          </Typography>
+        </>
+      ) : (
+        <h2>Loading</h2>
+      )}
+      <Divider />
+
+      {posts ? (
+        posts.map((post) => {
+          return <Post post={post} key={`post-${post.post_id}-${post.title}`} />;
+        })
       ) : (
         <h2>Loading</h2>
       )}
 
-      <Divider />
-
-      <Container maxWidth="lg">
-        {comments ? (
-          comments.map((comment, index) => {
-            return <Comment comment={comment} key={`comment-${index}`} />;
-          }) // TODO: Use comment_id in key
-        ) : (
-          <h2>Loading</h2>
-        )}
-      </Container>
-
       {display ? (
         <>
           <Modal open={open} onClose={handleClose}>
-            <CreateComment postID={postID} onFinish={handleClose} />
+            <CreatePost threadID={threadID} onFinish={handleClose} />
           </Modal>
 
           <AddButton onClick={onAddClick} />
