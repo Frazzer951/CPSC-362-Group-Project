@@ -51,21 +51,22 @@ export default function PostPage() {
   }, [postID, refresh]);
 
   const onAddClick = () => setOpen(true);
+  const flipRefresh = () => setRefresh(!refresh);
   const handleClose = () => {
     setOpen(false);
-    setRefresh(!refresh);
+    flipRefresh();
   };
 
   return (
     <div>
-      {post ? <Post post={post} /> : <h2>Loading</h2>}
+      {post ? <Post post={post} flipRefresh={flipRefresh} /> : <h2>Loading</h2>}
 
       <Divider />
 
       <Container maxWidth="lg">
         {comments ? (
           comments.map((comment, index) => {
-            return <Comment comment={comment} key={`comment-${index}`} />;
+            return <Comment comment={comment} flipRefresh={flipRefresh} key={`comment-${index}`} />;
           }) // TODO: Use comment_id in key
         ) : (
           <h2>Loading</h2>

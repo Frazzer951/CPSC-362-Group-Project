@@ -14,6 +14,7 @@ export default function Post(props) {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    // TODO: User userID instead of admin
     if (auth.logged_in && auth.isAdmin === 1) {
       console.log("Setting to true");
       setDisplay(true);
