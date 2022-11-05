@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreatePost from "../components/create_post";
-import Post from "../components/post";
+import Post from "../components/postLink";
 import AuthContext from "../context/AuthProvider";
 
 export default function Thread() {
