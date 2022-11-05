@@ -12,6 +12,7 @@ router = APIRouter()
 async def retrieve_user_data(user_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = "SELECT * FROM Users WHERE user_id = ?"
     sq = cur.execute(sql_query, [user_id])
@@ -34,6 +35,7 @@ async def create_user(user: User):
     # user.username, user.password
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = "INSERT INTO Users(username, password, admin) VALUES(?, ?, ?)"
     try:
@@ -58,6 +60,7 @@ async def authenticate_user(user: User):
     # if user does not exist or password return 401
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = "SELECT user_id, admin FROM Users WHERE username = ? AND password = ?"
     sq = cur.execute(sql_query, [user.username, user.password])
@@ -70,12 +73,16 @@ async def authenticate_user(user: User):
 async def edit_about_me(username: str, text: str):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = f"""UPDATE Users 
                     SET about_me = '{text}' 
                     WHERE username = '{username}'"""
-    # try:
-    sq = cur.execute(sql_query)
+    try:
+        sq = cur.execute(sql_query)
+    except:
+        con.close()
+        raise HTTPException(status_code=404, detail="User not found")
     con.commit()
     # except:
     #      con.close()

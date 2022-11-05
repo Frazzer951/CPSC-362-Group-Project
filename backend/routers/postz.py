@@ -12,6 +12,7 @@ router = APIRouter()
 async def retrieve_posts_in_thread(thread_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title FROM
                     Posts P, Users U WHERE thread_id = {thread_id}
@@ -28,6 +29,7 @@ async def retrieve_posts_in_thread(thread_id: int):
 async def retrieve_specified_post(post_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
     sql_query = f"""SELECT username, title, body
                     FROM Posts P, Users U
@@ -49,10 +51,15 @@ class Post(BaseModel):
 @router.post("/posts/{thread_id}", tags=["posts"])
 async def create_post_in_thread(thread_id: int, post: Post):
     con = sqlite3.connect("project.db")
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    """NEED TO CHECK IF USER EXISTS"""
-    sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
-    cur.execute(sql_query, [thread_id, post.user_id, post.title, post.body])
+    try:
+        sql_query = "INSERT INTO Posts(thread_id, user_id, title, body) VALUES(?, ?, ?, ?)"
+        cur.execute(sql_query, [thread_id, post.user_id, post.title, post.body])
+    except:
+        con.close()
+        raise HTTPException(status_code=409, detail="Conflict")
+    
     con.commit()
     con.close()
     return {"SUCCESS": True}
@@ -61,6 +68,7 @@ async def create_post_in_thread(thread_id: int, post: Post):
 async def edit_post_body(username: str, body: str, post_id: int, thread_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
     try:
         sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
@@ -84,6 +92,7 @@ async def edit_post_body(username: str, body: str, post_id: int, thread_id: int)
 async def edit_post_title(username: str, title: str, post_id: int, thread_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
     try:
         sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
@@ -106,8 +115,8 @@ async def edit_post_title(username: str, title: str, post_id: int, thread_id: in
 async def delete_post(username: str, post_id: int):
     con = sqlite3.connect("project.db")
     # ncon.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    
     sql_query = f"SELECT user_id FROM Users WHERE username = '{username}'"
     sq = cur.execute(sql_query)
     looking_for = sq.fetchone()
