@@ -30,7 +30,7 @@ async def retrieve_specified_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT user_id, username, title, body
+    sql_query = f"""SELECT P.user_id, username, title, body
                     FROM Posts P, Users U
                     WHERE P.post_id = {post_id} and U.user_id = P.user_id"""
     sq = cur.execute(sql_query)
