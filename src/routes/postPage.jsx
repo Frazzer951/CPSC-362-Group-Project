@@ -65,9 +65,9 @@ export default function PostPage() {
 
       <Container maxWidth="lg">
         {comments ? (
-          comments.map((comment, index) => {
-            return <Comment comment={comment} flipRefresh={flipRefresh} key={`comment-${index}`} />;
-          }) // TODO: Use comment_id in key
+          comments.map((comment) => {
+            return <Comment comment={comment} flipRefresh={flipRefresh} key={`comment-${comment.userID}`} />;
+          })
         ) : (
           <h2>Loading</h2>
         )}
