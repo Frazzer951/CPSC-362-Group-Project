@@ -64,8 +64,13 @@ async def authenticate_user(user: User):
     return looking_for
 
 
+# Text object so query can accept multiline strings
+class Text(BaseModel):
+    text: str
+
+
 @router.patch("/user/about-me/", tags=["users"])
-async def edit_about_me(user_id: int, text: str):
+async def edit_about_me(user_id: int, text: Text):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -76,7 +81,7 @@ async def edit_about_me(user_id: int, text: str):
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
     sql_query = f"""UPDATE Users
-                    SET about_me = '{text}'
+                    SET about_me = '{text.text}'
                     WHERE user_id = {user_id}"""
     try:
         cur.execute(sql_query)
