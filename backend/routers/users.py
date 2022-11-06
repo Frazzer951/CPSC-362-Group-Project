@@ -3,7 +3,7 @@ import sqlite3
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from utils import row_to_dict
+from utils import row_to_dict, Text
 
 router = APIRouter()
 
@@ -62,11 +62,6 @@ async def authenticate_user(user: User):
     if not looking_for:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return looking_for
-
-
-# Text object so query can accept multiline strings
-class Text(BaseModel):
-    text: str
 
 
 @router.patch("/user/about-me/", tags=["users"])

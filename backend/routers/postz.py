@@ -3,7 +3,7 @@ import sqlite3
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from utils import row_to_dict
+from utils import row_to_dict, Text
 
 router = APIRouter()
 
@@ -67,7 +67,7 @@ async def create_post_in_thread(thread_id: int, post: Post):
 
 
 @router.patch("/posts/edit/body/", tags=["posts"])
-async def edit_post_body(user_id: int, post_id: int, body: str):
+async def edit_post_body(user_id: int, post_id: int, body: Text):
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -82,7 +82,7 @@ async def edit_post_body(user_id: int, post_id: int, body: str):
     # print(looking_for)
 
     sql_query = f"""UPDATE Posts
-                    SET body = '{body}'
+                    SET body = '{body.text}'
                     WHERE user_id = {user_id} AND
                         post_id = {post_id}"""
     try:
