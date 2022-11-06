@@ -76,7 +76,7 @@ export default function Comment(props) {
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
-            <EditComment comment={comment} onFinish={handleCloseEdit} />
+            <EditComment comment={comment} userID={auth.userID} onFinish={handleCloseEdit} />
           </Modal>
         </>
       ) : (

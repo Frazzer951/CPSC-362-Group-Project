@@ -1,6 +1,8 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import axios from "../api/axios";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -12,7 +14,7 @@ const style = {
 };
 
 export default function EditComment(props) {
-  let { comment, onFinish } = props;
+  let { comment, userID, onFinish } = props;
   const [body, setBody] = useState(comment.body);
   const [errMsg, setErrMsg] = useState("");
   const [bodyError, setBodyError] = useState(false);
@@ -43,6 +45,17 @@ export default function EditComment(props) {
       setErrMsg("Missing Body");
       return;
     }
+
+    await axios
+      .patch(`/comments/edit/?user_id=${userID}&comment_id=${comment.comment_id}`, {
+        text: body,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     onFinish();
   };
