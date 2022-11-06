@@ -79,7 +79,7 @@ export default function Thread(props) {
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
-            <EditThread thread={thread} onFinish={handleCloseEdit} />
+            <EditThread thread={thread} userID={auth.userID} onFinish={handleCloseEdit} />
           </Modal>
         </>
       ) : (

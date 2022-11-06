@@ -1,6 +1,8 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import axios from "../api/axios";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -12,7 +14,7 @@ const style = {
 };
 
 export default function EditThread(props) {
-  let { thread, onFinish } = props;
+  let { thread, userID, onFinish } = props;
   const [name, setName] = useState(thread.name);
   const [desc, setDesc] = useState(thread.description);
   const [errMsg, setErrMsg] = useState("");
@@ -59,18 +61,23 @@ export default function EditThread(props) {
       return;
     }
 
-    //await axios
-    //  .post("/comments", {
-    //    user_id: auth.userID,
-    //    post_id: postID,
-    //    body: body,
-    //  })
-    //  .then(function (response) {
-    //    console.log(response);
-    //  })
-    //  .catch(function (error) {
-    //    console.log(error);
-    //  });
+    await axios
+      .patch(`/threads/edit/name/?user_id=${userID}&name=${name}&thread_id=${thread.thread_id}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    await axios
+      .patch(`/threads/edit/description/?user_id=${userID}&description=${desc}&thread_id=${thread.thread_id}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     onFinish();
   };
