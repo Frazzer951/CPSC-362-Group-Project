@@ -1,12 +1,15 @@
 import { Box, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditPost from "./edit_post";
 
 export default function Post(props) {
   let { post, postID, flipRefresh } = props;
+  const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
@@ -37,6 +40,19 @@ export default function Post(props) {
   const onEditClick = () => {
     handleClose();
     setOpenEdit(true);
+  };
+
+  const onDeleteClick = async () => {
+    await axios
+      .delete(`/posts/?user_id=${auth.userID}&post_id=${postID}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    navigate("./..");
   };
 
   return (
@@ -75,6 +91,7 @@ export default function Post(props) {
             onClose={handleClose}
           >
             <MenuItem onClick={onEditClick}>Edit</MenuItem>
+            <MenuItem onClick={onDeleteClick}>Delete</MenuItem>
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
