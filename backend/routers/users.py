@@ -2,8 +2,7 @@ import sqlite3
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
-from utils import row_to_dict, Text
+from utils import Text, row_to_dict
 
 router = APIRouter()
 
