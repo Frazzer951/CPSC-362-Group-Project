@@ -21,7 +21,7 @@ export default function Post(props) {
       console.log("Setting to false");
       setDisplay(false);
     }
-  }, [auth]);
+  }, [auth, post.user_id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

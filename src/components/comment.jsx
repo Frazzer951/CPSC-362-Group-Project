@@ -21,7 +21,7 @@ export default function Comment(props) {
       console.log("Setting to false");
       setDisplay(false);
     }
-  }, [auth]);
+  }, [auth, comment.user_id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
