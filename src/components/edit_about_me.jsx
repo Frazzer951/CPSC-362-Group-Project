@@ -1,6 +1,7 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import axios from "../api/axios";
 
 const style = {
   position: "absolute",
@@ -13,7 +14,7 @@ const style = {
 };
 
 export default function EditAboutMe(props) {
-  let { about_me, onFinish } = props;
+  let { about_me, userID, onFinish } = props;
   const [aboutMe, setAboutMe] = useState(about_me);
   const [errMsg, setErrMsg] = useState("");
   const [aboutMeError, setAboutMeError] = useState(false);
@@ -45,18 +46,16 @@ export default function EditAboutMe(props) {
       return;
     }
 
-    //await axios
-    //  .post("/comments", {
-    //    user_id: auth.userID,
-    //    post_id: postID,
-    //    body: body,
-    //  })
-    //  .then(function (response) {
-    //    console.log(response);
-    //  })
-    //  .catch(function (error) {
-    //    console.log(error);
-    //  });
+    await axios
+      .patch(`/user/about-me/?user_id=${userID}`, {
+        text: aboutMe,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     onFinish();
   };

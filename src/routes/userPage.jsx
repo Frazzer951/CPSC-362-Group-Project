@@ -109,7 +109,7 @@ export default function UserPage() {
               </Menu>
 
               <Modal open={openEdit} onClose={handleCloseEdit}>
-                <EditAboutMe about_me={user.about_me} onFinish={handleCloseEdit} />
+                <EditAboutMe about_me={user.about_me} userID={userID} onFinish={handleCloseEdit} />
               </Modal>
             </>
           ) : (
