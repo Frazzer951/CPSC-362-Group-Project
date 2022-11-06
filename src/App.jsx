@@ -17,7 +17,7 @@ export default function App() {
     let isAdmin = localStorage.getItem("isAdmin");
 
     if (userID && isAdmin) {
-      setAuth({ logged_in: true, isAdmin: parseInt(isAdmin), userID });
+      setAuth({ logged_in: true, isAdmin: parseInt(isAdmin), userID: parseInt(userID) });
     }
   }, [setAuth]);
 
