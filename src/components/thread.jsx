@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditThread from "./edit_thread";
-import axios from "../api/axios";
 
 export default function Thread(props) {
   let { thread, flipRefresh } = props;
