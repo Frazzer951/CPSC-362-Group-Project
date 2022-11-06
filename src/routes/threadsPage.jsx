@@ -7,7 +7,7 @@ import CreateThread from "../components/create_thread";
 import Thread from "../components/thread";
 import AuthContext from "../context/AuthProvider";
 
-export default function Threads() {
+export default function ThreadsPage() {
   const [threads, setThreads] = useState();
   const [refresh, setRefresh] = useState(false);
   const [display, setDisplay] = useState(false);
@@ -37,9 +37,10 @@ export default function Threads() {
 
   const [open, setOpen] = useState(false);
   const onAddClick = () => setOpen(true);
+  const flipRefresh = () => setRefresh(!refresh);
   const handleClose = () => {
     setOpen(false);
-    setRefresh(!refresh);
+    flipRefresh();
   };
 
   return (
@@ -53,7 +54,7 @@ export default function Threads() {
       {threads ? (
         <Box>
           {threads.map((thread) => (
-            <Thread thread={thread} />
+            <Thread thread={thread} flipRefresh={flipRefresh} key={`thread-${thread.thread_id}-${thread.name}`} />
           ))}
         </Box>
       ) : (

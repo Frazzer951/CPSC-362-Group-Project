@@ -2,8 +2,7 @@ import sqlite3
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
-from utils import row_to_dict
+from utils import Text, row_to_dict
 
 router = APIRouter()
 
@@ -20,7 +19,7 @@ async def retrieve_comments_from_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT username, body, comment_id
+    sql_query = f"""SELECT C.user_id, username, body, comment_id
                     FROM Comments C, Users U
                     WHERE C.post_id = {post_id} and U.user_id = C.user_id"""
     sq = cur.execute(sql_query)
@@ -48,7 +47,7 @@ async def create_comment_on_post(comment: Comment):
 
 
 @router.patch("/comments/edit/", tags=["comments"])
-async def edit_comment(user_id: int, body: str, comment_id: int, post_id: int):
+async def edit_comment(user_id: int, comment_id: int, body: Text):
     "TODO Does not catch when comment or post does not exist"
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
@@ -61,9 +60,8 @@ async def edit_comment(user_id: int, body: str, comment_id: int, post_id: int):
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
     sql_query = f"""UPDATE Comments
-                    SET body = '{body}'
+                    SET body = '{body.text}'
                     WHERE user_id = {user_id} AND
-                        post_id = {post_id} AND
                         comment_id = {comment_id}"""
     try:
         cur.execute(sql_query)

@@ -1,4 +1,4 @@
-import { Card, CardContent, Container, Divider, Modal, Typography } from "@mui/material";
+import { Container, Divider, Modal } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -6,9 +6,10 @@ import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import Comment from "../components/comment";
 import CreateComment from "../components/create_comment";
+import Post from "../components/post";
 import AuthContext from "../context/AuthProvider";
 
-export default function Post() {
+export default function PostPage() {
   let { postID } = useParams();
   const [post, setPost] = useState();
   const [comments, setComments] = useState();
@@ -50,33 +51,22 @@ export default function Post() {
   }, [postID, refresh]);
 
   const onAddClick = () => setOpen(true);
+  const flipRefresh = () => setRefresh(!refresh);
   const handleClose = () => {
     setOpen(false);
-    setRefresh(!refresh);
+    flipRefresh();
   };
 
   return (
     <div>
-      {post ? (
-        <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
-          <CardContent>
-            <Typography variant="body2">{post.username}</Typography>
-            <Typography variant="h3" component="div">
-              {post.title}
-            </Typography>
-            <Typography variant="body1">{post.body}</Typography>
-          </CardContent>
-        </Card>
-      ) : (
-        <h2>Loading</h2>
-      )}
+      {post ? <Post post={post} postID={postID} flipRefresh={flipRefresh} /> : <h2>Loading</h2>}
 
       <Divider />
 
       <Container maxWidth="lg">
         {comments ? (
           comments.map((comment) => {
-            return <Comment comment={comment} />;
+            return <Comment comment={comment} flipRefresh={flipRefresh} key={`comment-${comment.comment_id}`} />;
           })
         ) : (
           <h2>Loading</h2>

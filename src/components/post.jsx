@@ -1,19 +1,106 @@
-import { Card, CardContent, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
+import EditPost from "./edit_post";
 
 export default function Post(props) {
-  let { post } = props;
+  let { post, postID, flipRefresh } = props;
+  const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [display, setDisplay] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (auth.logged_in && auth.userID === post.user_id) {
+      console.log("Setting to true");
+      setDisplay(true);
+    } else {
+      console.log("Setting to false");
+      setDisplay(false);
+    }
+  }, [auth, post.user_id]);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+    flipRefresh();
+  };
+
+  const onEditClick = () => {
+    handleClose();
+    setOpenEdit(true);
+  };
+
+  const onDeleteClick = async () => {
+    await axios
+      .delete(`/posts/?user_id=${auth.userID}&post_id=${postID}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    navigate("./..");
+  };
 
   return (
-    <Link style={{ textDecoration: "none" }} to={`${post.post_id}`} key={post.post_id}>
-      <Card sx={{ minWidth: 275, margin: "0.5rem" }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
+    <Box sx={{ position: "relative" }}>
+      <Paper sx={{ minWidth: 275, margin: "0.5rem" }}>
+        <Box sx={{ padding: "1rem" }}>
+          <Typography variant="body2">{post.username}</Typography>
+          <Typography variant="h3" component="div">
             {post.title}
           </Typography>
-          <Typography variant="body2">by {post.username}</Typography>
-        </CardContent>
-      </Card>
-    </Link>
+          <Typography variant="body1">{post.body}</Typography>
+        </Box>
+
+        <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>
+          {display ? (
+            <IconButton onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+          ) : (
+            <></>
+          )}
+        </Box>
+      </Paper>
+
+      {display ? (
+        <>
+          <Menu
+            sx={{
+              "& .MuiPaper-root": {
+                backgroundColor: "secondary.light",
+              },
+            }}
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={onEditClick}>Edit</MenuItem>
+            <MenuItem onClick={onDeleteClick}>Delete</MenuItem>
+          </Menu>
+
+          <Modal open={openEdit} onClose={handleCloseEdit}>
+            <EditPost post={post} userID={auth.userID} postID={postID} onFinish={handleCloseEdit} />
+          </Modal>
+        </>
+      ) : (
+        <></>
+      )}
+    </Box>
   );
 }

@@ -2,8 +2,7 @@ import sqlite3
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
-from utils import row_to_dict
+from utils import Text, row_to_dict
 
 router = APIRouter()
 
@@ -31,7 +30,7 @@ async def retrieve_specified_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT username, title, body
+    sql_query = f"""SELECT P.user_id, username, title, body
                     FROM Posts P, Users U
                     WHERE P.post_id = {post_id} and U.user_id = P.user_id"""
     sq = cur.execute(sql_query)
@@ -67,8 +66,7 @@ async def create_post_in_thread(thread_id: int, post: Post):
 
 
 @router.patch("/posts/edit/body/", tags=["posts"])
-async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
-    """TODO"""
+async def edit_post_body(user_id: int, post_id: int, body: Text):
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -83,10 +81,9 @@ async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
     # print(looking_for)
 
     sql_query = f"""UPDATE Posts
-                    SET body = '{body}'
+                    SET body = '{body.text}'
                     WHERE user_id = {user_id} AND
-                          post_id = {post_id} AND
-                          thread_id = {thread_id}"""
+                        post_id = {post_id}"""
     try:
         cur.execute(sql_query)
     except:
@@ -98,7 +95,7 @@ async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
 
 
 @router.patch("/posts/edit/title/", tags=["posts"])
-async def edit_post_title(user_id: int, title: str, post_id: int, thread_id: int):
+async def edit_post_title(user_id: int, post_id: int, title: str):
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -113,8 +110,7 @@ async def edit_post_title(user_id: int, title: str, post_id: int, thread_id: int
     sql_query = f"""UPDATE Posts
                     SET title = '{title}'
                     WHERE user_id = {user_id} AND
-                          post_id = {post_id} AND
-                          thread_id = {thread_id}"""
+                        post_id = {post_id}"""
     try:
         cur.execute(sql_query)
     except:

@@ -5,10 +5,10 @@ import { useParams } from "react-router-dom";
 import axios from "../api/axios";
 import AddButton from "../components/add_button";
 import CreatePost from "../components/create_post";
-import Post from "../components/post";
+import Post from "../components/postLink";
 import AuthContext from "../context/AuthProvider";
 
-export default function Thread() {
+export default function ThreadPage() {
   let { threadID } = useParams();
   const [thread, setThread] = useState();
   const [posts, setPosts] = useState();
@@ -73,7 +73,7 @@ export default function Thread() {
 
       {posts ? (
         posts.map((post) => {
-          return <Post post={post} />;
+          return <Post post={post} key={`post-${post.post_id}-${post.title}`} />;
         })
       ) : (
         <h2>Loading</h2>
