@@ -65,9 +65,10 @@ async def create_post_in_thread(thread_id: int, post: Post):
     con.close()
     return {"SUCCESS": True}
 
+
 @router.patch("/posts/edit/body/", tags=["posts"])
 async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
-    """TODO """
+    """TODO"""
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -77,13 +78,13 @@ async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
-        raise HTTPException(status_code=404, detail="User not found")   
+        raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
     # print(looking_for)
 
-    sql_query = f"""UPDATE Posts 
-                    SET body = '{body}' 
-                    WHERE user_id = {user_id} AND 
+    sql_query = f"""UPDATE Posts
+                    SET body = '{body}'
+                    WHERE user_id = {user_id} AND
                           post_id = {post_id} AND
                           thread_id = {thread_id}"""
     try:
@@ -94,6 +95,7 @@ async def edit_post_body(user_id: int, body: str, post_id: int, thread_id: int):
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.patch("/posts/edit/title/", tags=["posts"])
 async def edit_post_title(user_id: int, title: str, post_id: int, thread_id: int):
@@ -108,9 +110,9 @@ async def edit_post_title(user_id: int, title: str, post_id: int, thread_id: int
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
-    sql_query = f"""UPDATE Posts 
-                    SET title = '{title}' 
-                    WHERE user_id = {user_id} AND 
+    sql_query = f"""UPDATE Posts
+                    SET title = '{title}'
+                    WHERE user_id = {user_id} AND
                           post_id = {post_id} AND
                           thread_id = {thread_id}"""
     try:
@@ -121,6 +123,7 @@ async def edit_post_title(user_id: int, title: str, post_id: int, thread_id: int
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.delete("/posts/", tags=["posts"])
 async def delete_post(user_id: int, post_id: int):
@@ -134,8 +137,8 @@ async def delete_post(user_id: int, post_id: int):
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
-    sql_query = f"""DELETE FROM Posts 
-                    WHERE user_id = {user_id} AND 
+    sql_query = f"""DELETE FROM Posts
+                    WHERE user_id = {user_id} AND
                         post_id = {post_id}"""
     cur.execute(sql_query)
     con.commit()

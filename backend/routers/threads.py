@@ -52,13 +52,14 @@ async def create_thread(name: str, desc: str):
     con.close()
     return {"SUCCESS": True}
 
+
 @router.patch("/threads/edit/name/", tags=["threads"])
 async def edit_thread_name(user_id: int, name: str, thread_id: int):
     con = sqlite3.connect("project.db")
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-   
+
     sql_query = f"SELECT user_id, admin FROM Users WHERE user_id = {user_id}"
     sq = cur.execute(sql_query)
     looking_for = sq.fetchone()
@@ -70,13 +71,14 @@ async def edit_thread_name(user_id: int, name: str, thread_id: int):
     if not is_admin:
         con.close()
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""UPDATE Threads 
-                    SET name = '{name}' 
+    sql_query = f"""UPDATE Threads
+                    SET name = '{name}'
                     WHERE thread_id = {thread_id}"""
     cur.execute(sql_query)
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.patch("/threads/edit/description/", tags=["threads"])
 async def edit_thread_description(user_id: int, description: str, thread_id: int):
@@ -94,13 +96,14 @@ async def edit_thread_description(user_id: int, description: str, thread_id: int
     is_admin = looking_for["admin"]
     if not is_admin:
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""UPDATE Threads 
-                    SET description = '{description}' 
+    sql_query = f"""UPDATE Threads
+                    SET description = '{description}'
                     WHERE thread_id = {thread_id}"""
     cur.execute(sql_query)
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.delete("/threads/", tags=["threads"])
 async def delete_thread(user_id: int, thread_id: int):
@@ -118,7 +121,7 @@ async def delete_thread(user_id: int, thread_id: int):
     if not is_admin:
         con.close()
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""DELETE FROM Threads 
+    sql_query = f"""DELETE FROM Threads
                     WHERE thread_id = {thread_id}"""
     try:
         cur.execute(sql_query)
@@ -128,4 +131,3 @@ async def delete_thread(user_id: int, thread_id: int):
     con.commit()
     con.close()
     return {"SUCCESS": True}
-

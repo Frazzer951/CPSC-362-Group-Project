@@ -21,8 +21,9 @@ async def retrieve_user_data(user_id: int):
     # Get the list of tuples generated from the query
     con.close()
     return looking_for
-# grabs all comments and posts made by a user
 
+
+# grabs all comments and posts made by a user
 
 
 class User(BaseModel):
@@ -62,6 +63,7 @@ async def authenticate_user(user: User):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return looking_for
 
+
 @router.patch("/user/about-me/", tags=["users"])
 async def edit_about_me(user_id: int, text: str):
     con = sqlite3.connect("project.db")  # con is connection
@@ -73,8 +75,8 @@ async def edit_about_me(user_id: int, text: str):
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""UPDATE Users 
-                    SET about_me = '{text}' 
+    sql_query = f"""UPDATE Users
+                    SET about_me = '{text}'
                     WHERE user_id = {user_id}"""
     try:
         cur.execute(sql_query)
@@ -85,6 +87,5 @@ async def edit_about_me(user_id: int, text: str):
     con.close()
     return {"detail": "SUCCESS"}
 
+
 """THE about me is having issue with a string that has an apostrphe in it"""
-
-

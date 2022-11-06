@@ -25,7 +25,7 @@ async def retrieve_comments_from_post(post_id: int):
                     WHERE C.post_id = {post_id} and U.user_id = C.user_id"""
     sq = cur.execute(sql_query)
     # sq is a cursor resulting from the query made
-    looking_for = sq.fetchall() 
+    looking_for = sq.fetchall()
     con.close()
     return looking_for
 
@@ -46,6 +46,7 @@ async def create_comment_on_post(comment: Comment):
     con.close()
     return {"SUCCESS": True}
 
+
 @router.patch("/comments/edit/", tags=["comments"])
 async def edit_comment(user_id: int, body: str, comment_id: int, post_id: int):
     "TODO Does not catch when comment or post does not exist"
@@ -59,9 +60,9 @@ async def edit_comment(user_id: int, body: str, comment_id: int, post_id: int):
     if not looking_for:
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""UPDATE Comments 
-                    SET body = '{body}' 
-                    WHERE user_id = {user_id} AND 
+    sql_query = f"""UPDATE Comments
+                    SET body = '{body}'
+                    WHERE user_id = {user_id} AND
                         post_id = {post_id} AND
                         comment_id = {comment_id}"""
     try:
@@ -72,6 +73,7 @@ async def edit_comment(user_id: int, body: str, comment_id: int, post_id: int):
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.delete("/comments/", tags=["comments"])
 async def delete_comment(user_id: int, comment_id: int):
@@ -89,8 +91,8 @@ async def delete_comment(user_id: int, comment_id: int):
     if not looking_for:
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""DELETE FROM Comments 
-                    WHERE user_id = {user_id} AND 
+    sql_query = f"""DELETE FROM Comments
+                    WHERE user_id = {user_id} AND
                         comment_id = {comment_id}"""
     try:
         cur.execute(sql_query)
@@ -106,5 +108,5 @@ async def delete_comment(user_id: int, comment_id: int):
 
 
 # db_create.sql allows me to insert into comments even if I dont use a
-# correct foreign key value. kinda weird 
+# correct foreign key value. kinda weird
 """DELETE still remove if it exists with a return true, not sure if we want that"""
