@@ -48,13 +48,6 @@ INSERT INTO Comments(user_id, post_id, body) VALUES(1, 3, "I like spamming");
 
 
 
-
-DROP TABLE Users;
-DROP TABLE Threads;
-DROP TABLE Posts;
-DROP TABLE Comments;
-
-
 SELECT * FROM Users;
 
 SELECT * FROM Threads;
@@ -62,3 +55,21 @@ SELECT * FROM Threads;
 SELECT * FROM Posts;
 
 SELECT * FROM Comments;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP TABLE Users;
+DROP TABLE Threads;
+DROP TABLE Posts;
+DROP TABLE Comments;

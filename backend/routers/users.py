@@ -32,7 +32,6 @@ class User(BaseModel):
 
 @router.post("/user/create", tags=["users"])
 async def create_user(user: User):
-    # user.username, user.password
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
@@ -44,13 +43,7 @@ async def create_user(user: User):
     except sqlite3.IntegrityError:
         con.close()
         raise HTTPException(status_code=406, detail="User already exists")
-    # sq is a cursor resulting from the query made
-
-    # Get the list of tuples generated from the query
     con.close()
-    # check if user already exists
-    # if it does error 406
-    # otherwise return success
     return {"detail": "SUCCESS"}
 
 
@@ -70,24 +63,28 @@ async def authenticate_user(user: User):
     return looking_for
 
 @router.patch("/user/about-me/", tags=["users"])
-async def edit_about_me(username: str, text: str):
+async def edit_about_me(user_id: int, text: str):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
+    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
+    sq = cur.execute(sql_query)
+    looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(status_code=404, detail="User not found")
     sql_query = f"""UPDATE Users 
                     SET about_me = '{text}' 
-                    WHERE username = '{username}'"""
+                    WHERE user_id = {user_id}"""
     try:
-        sq = cur.execute(sql_query)
-    except:
+        cur.execute(sql_query)
+    except Exception as error:
         con.close()
-        raise HTTPException(status_code=404, detail="User not found")
+        raise error
     con.commit()
-    # except:
-    #      con.close()
-    #      raise HTTPException(status_code=400, detail="Bad Request")
     con.close()
     return {"detail": "SUCCESS"}
+
+"""THE about me is having issue with a string that has an apostrphe in it"""
 
 
