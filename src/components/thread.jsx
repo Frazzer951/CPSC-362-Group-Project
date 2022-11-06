@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AuthContext from "../context/AuthProvider";
 import EditThread from "./edit_thread";
+import axios from "../api/axios";
 
 export default function Thread(props) {
   let { thread, flipRefresh } = props;
@@ -38,6 +39,20 @@ export default function Thread(props) {
   const onEditClick = () => {
     handleClose();
     setOpenEdit(true);
+  };
+
+  const onDeleteClick = async () => {
+    await axios
+      .delete(`/threads/?user_id=${auth.userID}&thread_id=${thread.thread_id}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    flipRefresh();
+    handleClose();
   };
 
   return (
@@ -76,6 +91,7 @@ export default function Thread(props) {
             onClose={handleClose}
           >
             <MenuItem onClick={onEditClick}>Edit</MenuItem>
+            <MenuItem onClick={onDeleteClick}>Delete</MenuItem>
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
