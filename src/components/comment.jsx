@@ -2,6 +2,7 @@ import { Box, IconButton, Menu, MenuItem, Modal, Paper, Typography } from "@mui/
 import { useContext, useEffect, useState } from "react";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditComment from "./edit_comment";
 
@@ -39,6 +40,20 @@ export default function Comment(props) {
     setOpenEdit(true);
   };
 
+  const onDeleteClick = async () => {
+    await axios
+      .delete(`/comments/?user_id=${auth.userID}&comment_id=${comment.comment_id}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    flipRefresh();
+    handleClose();
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       <Paper sx={{ minWidth: 275, margin: "0.5rem", backgroundColor: "secondary.main" }}>
@@ -72,6 +87,7 @@ export default function Comment(props) {
             onClose={handleClose}
           >
             <MenuItem onClick={onEditClick}>Edit</MenuItem>
+            <MenuItem onClick={onDeleteClick}>Delete</MenuItem>
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
