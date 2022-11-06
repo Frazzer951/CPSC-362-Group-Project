@@ -1,6 +1,8 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import axios from "../api/axios";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -12,7 +14,7 @@ const style = {
 };
 
 export default function EditPost(props) {
-  let { post, onFinish } = props;
+  let { post, userID, postID, onFinish } = props;
   const [title, setTitle] = useState(post.title);
   const [body, setBody] = useState(post.body);
   const [errMsg, setErrMsg] = useState("");
@@ -59,6 +61,28 @@ export default function EditPost(props) {
       return;
     }
 
+    console.log(body);
+
+    await axios
+      .patch(`/posts/edit/title/?user_id=${userID}&post_id=${postID}&title=${title}`)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    await axios
+      .patch(`/posts/edit/body/?user_id=${userID}&post_id=${postID}`, {
+        text: body,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     onFinish();
   };
 
@@ -66,8 +90,6 @@ export default function EditPost(props) {
     <Container sx={style} maxWidth="sm">
       <Box sx={{ display: "grid" }}>
         <Typography variant="h3">Edit Post</Typography>
-
-        <Typography variant="p">{JSON.stringify(post)}</Typography>
 
         <Typography className={errMsg ? "errmsg" : "offscreen"} variant="p">
           {errMsg}

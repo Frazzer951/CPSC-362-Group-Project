@@ -6,7 +6,7 @@ import AuthContext from "../context/AuthProvider";
 import EditPost from "./edit_post";
 
 export default function Post(props) {
-  let { post, flipRefresh } = props;
+  let { post, postID, flipRefresh } = props;
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
@@ -79,7 +79,7 @@ export default function Post(props) {
           </Menu>
 
           <Modal open={openEdit} onClose={handleCloseEdit}>
-            <EditPost post={post} onFinish={handleCloseEdit} />
+            <EditPost post={post} userID={auth.userID} postID={postID} onFinish={handleCloseEdit} />
           </Modal>
         </>
       ) : (

@@ -59,7 +59,7 @@ export default function PostPage() {
 
   return (
     <div>
-      {post ? <Post post={post} flipRefresh={flipRefresh} /> : <h2>Loading</h2>}
+      {post ? <Post post={post} postID={postID} flipRefresh={flipRefresh} /> : <h2>Loading</h2>}
 
       <Divider />
 
