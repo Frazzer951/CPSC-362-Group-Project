@@ -18,7 +18,7 @@ export default function UserPage() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    if (auth.logged_in && auth.userID === userID) {
+    if (auth.logged_in && auth.userID === parseInt(userID)) {
       console.log("Setting to true");
       setDisplay(true);
     } else {
