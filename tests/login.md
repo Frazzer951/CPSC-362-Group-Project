@@ -1,3 +1,6 @@
+- [Create user account](#create-user-account)
+- [Login to Account](#login-to-account)
+
 # Create user account
 
 1. Click on the account menu icon
