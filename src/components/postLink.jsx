@@ -18,12 +18,16 @@ export default function Post(props) {
 
           <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem", display: "flex" }}>
             <Box sx={{ margin: "0.2rem" }}>
-              <ThumbUp sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
-              {Math.floor(Math.random() * 101)}
+              <ThumbUp sx={{ marginRight: "0.1rem" }} fontSize="inherit" color="primary" />
+              <Typography variant="body" color="primary">
+                {Math.floor(Math.random() * 101)}
+              </Typography>
             </Box>
             <Box sx={{ margin: "0.2rem" }}>
-              <ThumbDown sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
-              {Math.floor(Math.random() * 101)}
+              <ThumbDown sx={{ marginRight: "0.1rem" }} fontSize="inherit" color="primary" />
+              <Typography variant="body" color="primary">
+                {Math.floor(Math.random() * 101)}
+              </Typography>
             </Box>
           </Box>
         </Paper>
