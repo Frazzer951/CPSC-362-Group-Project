@@ -1,4 +1,4 @@
-import { ThumbUp, ThumbDown } from "@mui/icons-material";
+import { ThumbDown, ThumbUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -44,12 +44,13 @@ export default function LikeDislikeButton(props) {
         size="small"
         onClick={() => onClick(liked, disliked, true)}
       >
-        <ThumbUp fontSize="inherit" />
+        <ThumbUp sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
         {likes}
       </IconButton>
 
       <IconButton
         sx={{
+          margin: "0.2rem",
           backgroundColor: dislikeBgColor,
           color: "white",
           ":hover": {
@@ -60,7 +61,7 @@ export default function LikeDislikeButton(props) {
         size="small"
         onClick={() => onClick(liked, disliked, false)}
       >
-        <ThumbDown fontSize="inherit" />
+        <ThumbDown sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
         {dislikes}
       </IconButton>
     </>

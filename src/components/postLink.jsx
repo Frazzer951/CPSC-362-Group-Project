@@ -1,3 +1,4 @@
+import { ThumbDown, ThumbUp } from "@mui/icons-material";
 import { Box, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -15,8 +16,15 @@ export default function Post(props) {
             </Typography>
           </Box>
 
-          <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
-            <Typography variant="body2">Likes: {Math.floor(Math.random() * 101)}</Typography>
+          <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem", display: "flex" }}>
+            <Box sx={{ margin: "0.2rem" }}>
+              <ThumbUp sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
+              {Math.floor(Math.random() * 101)}
+            </Box>
+            <Box sx={{ margin: "0.2rem" }}>
+              <ThumbDown sx={{ marginRight: "0.1rem" }} fontSize="inherit" />
+              {Math.floor(Math.random() * 101)}
+            </Box>
           </Box>
         </Paper>
       </Box>
