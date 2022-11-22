@@ -43,3 +43,17 @@ We'll be using the post created in the [Create Post](#create-post) section
    ![Edited Post](images/edited_post.png)
 
 # Delete Post
+
+A user can delete posts that they have created themeselves.
+To get started make sure you are logged in and on the post's page.
+We'll be using the post created in the [Create Post](#create-post) section
+
+1. Click the 3 dot menu in the top left of the post
+
+   ![Menu](images/menu.png)
+
+2. Click on the delete button
+
+   ![Post Delete Menu](images/post_delete.png)
+
+3. Once the request has been processed you will be sent back to the thread page and the post will be gone.
