@@ -1,4 +1,5 @@
 # Create user account
+
 1. Click on the account menu icon
 
 ![Account Menu](./images/account_menu_icon.png)
@@ -17,6 +18,7 @@
 ![Account Failure](./images/account_failure.png)
 
 # Login to Account
+
 1. Click on the account menu icon
 
 ![Account Menu](./images/account_menu_icon.png)
