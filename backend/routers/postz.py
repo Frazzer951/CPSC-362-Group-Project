@@ -13,6 +13,7 @@ async def retrieve_posts_in_thread(thread_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
+    # TODO Also include # of likes for each post
     sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title FROM
                     Posts P, Users U WHERE thread_id = {thread_id}
                     AND P.user_id = U.user_id"""
@@ -30,6 +31,7 @@ async def retrieve_specified_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
+    # TODO Also include # of likes for post
     sql_query = f"""SELECT P.user_id, username, title, body
                     FROM Posts P, Users U
                     WHERE P.post_id = {post_id} and U.user_id = P.user_id"""

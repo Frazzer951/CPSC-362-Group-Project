@@ -6,6 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditPost from "./edit_post";
+import LikeDislikeButton from "./like_dislike_button";
 
 export default function Post(props) {
   let { post, postID, flipRefresh } = props;
@@ -14,6 +15,8 @@ export default function Post(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -25,6 +28,12 @@ export default function Post(props) {
       setDisplay(false);
     }
   }, [auth, post.user_id]);
+
+  useEffect(() => {
+    // TODO: Query backend if user has liked post
+    setLiked(false);
+    setDisliked(false);
+  }, [auth]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,6 +64,26 @@ export default function Post(props) {
     navigate("./..");
   };
 
+  const OnRate = async (liked, disliked, like) => {
+    // TODO: Make API Calls
+    if (auth.logged_in) {
+      if ((liked && like) || (disliked && !like)) {
+        // Call Unrate API Function
+        console.log("remove");
+      } else {
+        if (like) {
+          // Call Like API
+          console.log("like");
+        } else {
+          // Call Dislike API
+          console.log("dislike");
+        }
+      }
+
+      flipRefresh();
+    }
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       <Paper sx={{ minWidth: 275, margin: "0.5rem" }}>
@@ -64,6 +93,16 @@ export default function Post(props) {
             {post.title}
           </Typography>
           <Typography variant="body1">{post.body}</Typography>
+        </Box>
+
+        <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
+          <LikeDislikeButton
+            onClick={OnRate}
+            likes={Math.floor(Math.random() * 101)}
+            dislikes={Math.floor(Math.random() * 101)}
+            liked={liked}
+            disliked={disliked}
+          />
         </Box>
 
         <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>
