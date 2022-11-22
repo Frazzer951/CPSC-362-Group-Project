@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from utils import Text, row_to_dict
 
 router = APIRouter()
-
+# https://stackoverflow.com/questions/15961213/sql-multiple-foreign-keys-as-primary-keys
 
 @router.get("/users/{user_id}", tags=["users"])
 async def retrieve_user_data(user_id: int):
