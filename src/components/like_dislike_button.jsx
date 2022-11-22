@@ -5,34 +5,44 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 export default function LikeDislikeButton(props) {
-  const { onClick, likes, dislikes, rated } = props;
-  const [bgColor, setBgColor] = useState("secondary.main");
-  const [hoverColor, setHoverColor] = useState("primary.main");
+  const { onClick, likes, dislikes, liked, disliked } = props;
+  const [likeBgColor, setLikeBgColor] = useState("secondary.main");
+  const [likeHoverColor, setLikeHoverColor] = useState("primary.main");
+  const [dislikeBgColor, setDislikeBgColor] = useState("secondary.main");
+  const [dislikeHoverColor, setDislikeHoverColor] = useState("primary.main");
 
   useEffect(() => {
-    if (rated) {
-      setBgColor("primary.main");
-      setHoverColor("secondary.main");
+    if (liked) {
+      setLikeBgColor("primary.main");
+      setLikeHoverColor("secondary.main");
     } else {
-      setBgColor("secondary.main");
-      setHoverColor("primary.main");
+      setLikeBgColor("secondary.main");
+      setLikeHoverColor("primary.main");
     }
-  }, [rated]);
+
+    if (disliked) {
+      setDislikeBgColor("primary.main");
+      setDislikeHoverColor("secondary.main");
+    } else {
+      setDislikeBgColor("secondary.main");
+      setDislikeHoverColor("primary.main");
+    }
+  }, [liked, disliked]);
 
   return (
     <>
       <IconButton
         sx={{
           margin: "0.2rem",
-          backgroundColor: bgColor,
+          backgroundColor: likeBgColor,
           color: "white",
           ":hover": {
-            bgcolor: hoverColor,
+            bgcolor: likeHoverColor,
             color: "white",
           },
         }}
         size="small"
-        onClick={() => onClick(rated, true)}
+        onClick={() => onClick(liked, disliked, true)}
       >
         <ThumbUp fontSize="inherit" />
         {likes}
@@ -40,15 +50,15 @@ export default function LikeDislikeButton(props) {
 
       <IconButton
         sx={{
-          backgroundColor: bgColor,
+          backgroundColor: dislikeBgColor,
           color: "white",
           ":hover": {
-            bgcolor: hoverColor,
+            bgcolor: dislikeHoverColor,
             color: "white",
           },
         }}
         size="small"
-        onClick={() => onClick(rated, false)}
+        onClick={() => onClick(liked, disliked, false)}
       >
         <ThumbDown fontSize="inherit" />
         {dislikes}

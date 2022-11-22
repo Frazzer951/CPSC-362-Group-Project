@@ -15,7 +15,8 @@ export default function Post(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [rated, setRated] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -30,7 +31,8 @@ export default function Post(props) {
 
   useEffect(() => {
     // TODO: Query backend if user has liked post
-    setRated(false);
+    setLiked(false);
+    setDisliked(false);
   }, [auth]);
 
   const handleClick = (event) => {
@@ -62,10 +64,24 @@ export default function Post(props) {
     navigate("./..");
   };
 
-  const OnRate = async (rated, like) => {
-    console.log(`${rated}`);
-    console.log(like);
-    flipRefresh();
+  const OnRate = async (liked, disliked, like) => {
+    // TODO: Make API Calls
+    if (auth.logged_in) {
+      if ((liked && like) || (disliked && !like)) {
+        // Call Unrate API Function
+        console.log("remove");
+      } else {
+        if (like) {
+          // Call Like API
+          console.log("like");
+        } else {
+          // Call Dislike API
+          console.log("dislike");
+        }
+      }
+
+      flipRefresh();
+    }
   };
 
   return (
@@ -84,7 +100,8 @@ export default function Post(props) {
             onClick={OnRate}
             likes={Math.floor(Math.random() * 101)}
             dislikes={Math.floor(Math.random() * 101)}
-            rated={rated}
+            liked={liked}
+            disliked={disliked}
           />
         </Box>
 
