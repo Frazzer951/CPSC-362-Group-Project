@@ -22,7 +22,7 @@ async def retrieve_user_data(user_id: int):
     return looking_for
 
 
-# grabs all comments and posts made by a user
+# TODO: grabs all posts made by a user
 
 
 class User(BaseModel):
