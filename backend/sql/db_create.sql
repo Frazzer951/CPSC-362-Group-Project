@@ -1,3 +1,4 @@
+-- Active: 1667672797781@@127.0.0.1@3306
 CREATE TABLE
     Users (
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,3 +35,13 @@ CREATE TABLE
         CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
         CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE
     );
+
+CREATE TABLE 
+        LIKES(
+            user_id INTEGER NOT NULL,
+            post_id INTEGER NOT NULL,
+            like_state BOOL,
+            CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE,
+            CONSTRAINT like_id PRIMARY KEY (user_id, post_id)
+        );
