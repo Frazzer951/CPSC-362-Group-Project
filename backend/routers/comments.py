@@ -88,7 +88,7 @@ async def delete_comment(user_id: int, comment_id: int):
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="User not found")        
     sql_query = f"""DELETE FROM Comments
                     WHERE user_id = {user_id} AND
                         comment_id = {comment_id}"""

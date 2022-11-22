@@ -22,7 +22,29 @@ async def retrieve_user_data(user_id: int):
     return looking_for
 
 
-# TODO: grabs all posts made by a user
+@router.get("/posts/{user_id}", tags=["users"])
+async def retrieve_posts_from_user(user_id: int):
+    con = sqlite3.connect("project.db")  # con is connection
+    con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
+    cur = con.cursor()  # cur is cursor
+    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title FROM
+                    Posts P, Users U WHERE user_id = {user_id}
+                    AND P.user_id = U.user_id"""
+    sq = cur.execute(sql_query)
+    # sq is a cursor resulting from the query made
+    looking_for = sq.fetchall()
+    for post in looking_for:
+        sql_query = """SELECT COUNT(CASE WHEN like_state = 1 THEN 1 END) AS likes,
+                              COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
+                              FROM LIKES WHERE post_id = ?"""
+    # Get the list of tuples generated form the query
+        sq = cur.execute(sql_query, [post["post_id"]])
+        lds = sq.fetchone()
+        post.update(lds)
+        # Combine the dictionaries so they include the likes and dislikes of each post
+    con.close()
+    return looking_for
 
 
 class User(BaseModel):
@@ -49,7 +71,6 @@ async def create_user(user: User):
 
 @router.post("/user/auth/", tags=["users"])
 async def authenticate_user(user: User):
-    # TODO: Use FastAPI Authentication to authenticate the user securely
     # if user does not exist or password return 401
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
