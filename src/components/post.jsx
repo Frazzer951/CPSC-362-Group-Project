@@ -6,6 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditPost from "./edit_post";
+import LikeButton from "./like_button";
 
 export default function Post(props) {
   let { post, postID, flipRefresh } = props;
@@ -14,6 +15,7 @@ export default function Post(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [liked, setLiked] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -25,6 +27,11 @@ export default function Post(props) {
       setDisplay(false);
     }
   }, [auth, post.user_id]);
+
+  useEffect(() => {
+    // TODO: Query backend if user has liked post
+    setLiked(false);
+  }, [auth]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,6 +62,11 @@ export default function Post(props) {
     navigate("./..");
   };
 
+  const OnLike = async (liked) => {
+    console.log(liked);
+    flipRefresh();
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       <Paper sx={{ minWidth: 275, margin: "0.5rem" }}>
@@ -64,6 +76,10 @@ export default function Post(props) {
             {post.title}
           </Typography>
           <Typography variant="body1">{post.body}</Typography>
+        </Box>
+
+        <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
+          <LikeButton onClick={OnLike} likes={Math.floor(Math.random() * 101)} liked={liked} />
         </Box>
 
         <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>
