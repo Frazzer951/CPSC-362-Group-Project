@@ -183,7 +183,7 @@ async def has_made_rating(user_id: int, post_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
     sq = cur.execute(sql_query, [user_id, post_id])
-    looking_for = sq.fetchall()
+    looking_for = sq.fetchone()
     if not looking_for:
         return {"has_rated": False}
     if looking_for["like_state"]:
