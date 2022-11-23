@@ -6,6 +6,8 @@ SELECT * FROM Posts;
 
 SELECT * FROM Comments;
 
+SELECT * FROM Likes;
+
 DROP TABLE Users;
 
 DROP TABLE Threads;
