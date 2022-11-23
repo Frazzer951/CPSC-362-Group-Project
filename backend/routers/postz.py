@@ -184,7 +184,12 @@ async def has_made_rating(user_id: int, post_id: int):
     sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
     sq = cur.execute(sql_query, [user_id, post_id])
     looking_for = sq.fetchall()
-    return looking_for
+    if not looking_for:
+        return {"has_rated": False}
+    if looking_for["like_state"]:
+        return {"has_rated": False, "like": True}
+    else:
+        return {"has_rated": True, "like": False}
 
 
 @router.post("/posts/likes/", tags=["posts"])
