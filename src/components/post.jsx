@@ -9,7 +9,7 @@ import EditPost from "./edit_post";
 import LikeDislikeButton from "./like_dislike_button";
 
 export default function Post(props) {
-  let { post, postID, flipRefresh } = props;
+  let { post, postID, refresh, flipRefresh } = props;
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,7 +57,7 @@ export default function Post(props) {
       setLiked(false);
       setDisliked(false);
     }
-  }, [auth]);
+  }, [auth, postID, refresh]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,19 +89,33 @@ export default function Post(props) {
   };
 
   const OnRate = async (liked, disliked, like) => {
-    // TODO: Make API Calls
     if (auth.logged_in) {
       if ((liked && like) || (disliked && !like)) {
-        // Call Unrate API Function
         console.log("remove");
+
+        await axios
+          .delete(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}`)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       } else {
         if (like) {
-          // Call Like API
           console.log("like");
         } else {
-          // Call Dislike API
           console.log("dislike");
         }
+
+        await axios
+          .post(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}&like_state=${like}`)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
 
       flipRefresh();
