@@ -9,7 +9,7 @@ import EditPost from "./edit_post";
 import LikeDislikeButton from "./like_dislike_button";
 
 export default function Post(props) {
-  let { post, postID, flipRefresh } = props;
+  let { post, postID, refresh, flipRefresh } = props;
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,10 +30,34 @@ export default function Post(props) {
   }, [auth, post.user_id]);
 
   useEffect(() => {
-    // TODO: Query backend if user has liked post
-    setLiked(false);
-    setDisliked(false);
-  }, [auth]);
+    console.log(auth);
+    if (auth.logged_in) {
+      axios
+        .get(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}`)
+        .then(function (response) {
+          let data = response.data;
+          console.log(data);
+          if (data.has_rated) {
+            if (data.like) {
+              setLiked(true);
+              setDisliked(false);
+            } else {
+              setLiked(false);
+              setDisliked(true);
+            }
+          } else {
+            setLiked(false);
+            setDisliked(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      setLiked(false);
+      setDisliked(false);
+    }
+  }, [auth, postID, refresh]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,19 +89,33 @@ export default function Post(props) {
   };
 
   const OnRate = async (liked, disliked, like) => {
-    // TODO: Make API Calls
     if (auth.logged_in) {
       if ((liked && like) || (disliked && !like)) {
-        // Call Unrate API Function
         console.log("remove");
+
+        await axios
+          .delete(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}`)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       } else {
         if (like) {
-          // Call Like API
           console.log("like");
         } else {
-          // Call Dislike API
           console.log("dislike");
         }
+
+        await axios
+          .post(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}&like_state=${like}`)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
 
       flipRefresh();
@@ -96,13 +134,7 @@ export default function Post(props) {
         </Box>
 
         <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
-          <LikeDislikeButton
-            onClick={OnRate}
-            likes={Math.floor(Math.random() * 101)}
-            dislikes={Math.floor(Math.random() * 101)}
-            liked={liked}
-            disliked={disliked}
-          />
+          <LikeDislikeButton onClick={OnRate} likes={post.likes} dislikes={post.dislikes} liked={liked} disliked={disliked} />
         </Box>
 
         <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>

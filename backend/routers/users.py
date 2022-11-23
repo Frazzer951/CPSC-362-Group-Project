@@ -24,14 +24,14 @@ async def retrieve_user_data(user_id: int):
     return looking_for
 
 
-@router.get("/posts/{user_id}", tags=["users"])
+@router.get("/user/posts/{user_id}", tags=["users"])
 async def retrieve_posts_from_user(user_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title FROM
-                    Posts P, Users U WHERE user_id = {user_id}
+    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id FROM
+                    Posts P, Users U WHERE U.user_id = {user_id}
                     AND P.user_id = U.user_id"""
     sq = cur.execute(sql_query)
     # sq is a cursor resulting from the query made

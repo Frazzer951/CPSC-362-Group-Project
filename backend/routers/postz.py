@@ -18,7 +18,7 @@ async def retrieve_posts_in_thread(thread_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title FROM
+    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id FROM
                     Posts P, Users U WHERE thread_id = {thread_id}
                     AND P.user_id = U.user_id"""
     sq = cur.execute(sql_query)
@@ -183,10 +183,13 @@ async def has_made_rating(user_id: int, post_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
     sq = cur.execute(sql_query, [user_id, post_id])
-    looking_for = sq.fetchall()
+    looking_for = sq.fetchone()
     if not looking_for:
-        return False
-    return True
+        return {"has_rated": False}
+    if looking_for["like_state"]:
+        return {"has_rated": True, "like": True}
+    else:
+        return {"has_rated": True, "like": False}
 
 
 @router.post("/posts/likes/", tags=["posts"])
