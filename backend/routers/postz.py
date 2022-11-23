@@ -160,6 +160,24 @@ async def delete_post(user_id: int, post_id: int):
     return {"SUCCESS": True}
 
 
+@router.get("/posts/likes/", tags=["posts"])
+async def has_made_rating(user_id: int, post_id: int):
+    con = sqlite3.connect("project.db")
+    con.row_factory = row_to_dict
+    con.execute("PRAGMA foreign_keys = ON")
+    cur = con.cursor()
+    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
+    sq = cur.execute(sql_query)
+    looking_for = sq.fetchone()
+    if not looking_for:
+        raise HTTPException(status_code=404, detail="User not found")
+    sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
+    sq = cur.execute(sql_query, [user_id, post_id])
+    looking_for = sq.fetchall()
+    if not looking_for:
+        return False
+    return True
+
 @router.post("/posts/likes/", tags=["posts"])
 async def like_or_dislike_post(user_id: int, post_id: int, like_state: bool):
     con = sqlite3.connect("project.db")
