@@ -49,6 +49,16 @@ async def retrieve_specified_post(post_id: int):
     sq = cur.execute(sql_query)
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchone()
+    sql_query = """SELECT COUNT(CASE WHEN like_state = 1 THEN 1 END) AS likes,
+                              COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
+                              FROM LIKES WHERE post_id = ?"""
+    # Get the list of tuples generated form the query
+       
+        
+    sq = cur.execute(sql_query, [post_id])
+    lds = sq.fetchone()
+    looking_for.update(lds)
+        # Combine the dictionaries so they include the likes and dislikes of each post
     # Get the list of tuples generated from the query
     con.close()
     return looking_for
