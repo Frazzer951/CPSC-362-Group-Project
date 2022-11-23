@@ -2,10 +2,12 @@ import sqlite3
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
 from utils import Text, row_to_dict
 
 router = APIRouter()
 # https://stackoverflow.com/questions/15961213/sql-multiple-foreign-keys-as-primary-keys
+
 
 @router.get("/users/{user_id}", tags=["users"])
 async def retrieve_user_data(user_id: int):
@@ -38,7 +40,7 @@ async def retrieve_posts_from_user(user_id: int):
         sql_query = """SELECT COUNT(CASE WHEN like_state = 1 THEN 1 END) AS likes,
                               COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
                               FROM LIKES WHERE post_id = ?"""
-    # Get the list of tuples generated form the query
+        # Get the list of tuples generated form the query
         sq = cur.execute(sql_query, [post["post_id"]])
         lds = sq.fetchone()
         post.update(lds)

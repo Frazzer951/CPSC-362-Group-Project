@@ -2,6 +2,7 @@ import sqlite3
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
 from utils import Text, row_to_dict
 
 router = APIRouter()
@@ -9,6 +10,7 @@ router = APIRouter()
 """https://ubiq.co/database-blog/how-to-get-multiple-counts-with-single-query-in-mysql/
 https://callihandata.com/2022/05/02/multiple-counts-in-one-query/
 """
+
 
 @router.get("/posts/{thread_id}", tags=["posts"])
 async def retrieve_posts_in_thread(thread_id: int):
@@ -26,10 +28,9 @@ async def retrieve_posts_in_thread(thread_id: int):
         sql_query = """SELECT COUNT(CASE WHEN like_state = 1 THEN 1 END) AS likes,
                               COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
                               FROM LIKES WHERE post_id = ?"""
-    # Get the list of tuples generated form the query
-       
-        
-        sq = cur.execute(sql_query, [ post["post_id"]])
+        # Get the list of tuples generated form the query
+
+        sq = cur.execute(sql_query, [post["post_id"]])
         lds = sq.fetchone()
         post.update(lds)
         # Combine the dictionaries so they include the likes and dislikes of each post
@@ -53,12 +54,11 @@ async def retrieve_specified_post(post_id: int):
                               COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
                               FROM LIKES WHERE post_id = ?"""
     # Get the list of tuples generated form the query
-       
-        
+
     sq = cur.execute(sql_query, [post_id])
     lds = sq.fetchone()
     looking_for.update(lds)
-        # Combine the dictionaries so they include the likes and dislikes of each post
+    # Combine the dictionaries so they include the likes and dislikes of each post
     # Get the list of tuples generated from the query
     con.close()
     return looking_for
@@ -188,6 +188,7 @@ async def has_made_rating(user_id: int, post_id: int):
         return False
     return True
 
+
 @router.post("/posts/likes/", tags=["posts"])
 async def like_or_dislike_post(user_id: int, post_id: int, like_state: bool):
     con = sqlite3.connect("project.db")
@@ -219,6 +220,7 @@ async def like_or_dislike_post(user_id: int, post_id: int, like_state: bool):
     con.commit()
     con.close()
     return {"SUCCESS": True}
+
 
 @router.delete("/posts/likes/", tags=["posts"])
 async def unlike_or_undislike(user_id: int, post_id: int):
