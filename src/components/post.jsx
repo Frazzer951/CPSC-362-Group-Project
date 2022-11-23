@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 import EditPost from "./edit_post";
-import LikeButton from "./like_button";
+import LikeDislikeButton from "./like_dislike_button";
 
 export default function Post(props) {
   let { post, postID, flipRefresh } = props;
@@ -16,6 +16,7 @@ export default function Post(props) {
   const [display, setDisplay] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function Post(props) {
   useEffect(() => {
     // TODO: Query backend if user has liked post
     setLiked(false);
+    setDisliked(false);
   }, [auth]);
 
   const handleClick = (event) => {
@@ -62,9 +64,24 @@ export default function Post(props) {
     navigate("./..");
   };
 
-  const OnLike = async (liked) => {
-    console.log(liked);
-    flipRefresh();
+  const OnRate = async (liked, disliked, like) => {
+    // TODO: Make API Calls
+    if (auth.logged_in) {
+      if ((liked && like) || (disliked && !like)) {
+        // Call Unrate API Function
+        console.log("remove");
+      } else {
+        if (like) {
+          // Call Like API
+          console.log("like");
+        } else {
+          // Call Dislike API
+          console.log("dislike");
+        }
+      }
+
+      flipRefresh();
+    }
   };
 
   return (
@@ -79,7 +96,13 @@ export default function Post(props) {
         </Box>
 
         <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
-          <LikeButton onClick={OnLike} likes={Math.floor(Math.random() * 101)} liked={liked} />
+          <LikeDislikeButton
+            onClick={OnRate}
+            likes={Math.floor(Math.random() * 101)}
+            dislikes={Math.floor(Math.random() * 101)}
+            liked={liked}
+            disliked={disliked}
+          />
         </Box>
 
         <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>
