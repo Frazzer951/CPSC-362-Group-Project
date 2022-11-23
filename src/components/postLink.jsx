@@ -6,7 +6,7 @@ export default function Post(props) {
   let { post } = props;
 
   return (
-    <Link style={{ textDecoration: "none" }} to={`${post.post_id}`}>
+    <Link style={{ textDecoration: "none" }} to={`/${post.thread_id}/${post.post_id}`}>
       <Box sx={{ position: "relative" }}>
         <Paper sx={{ minWidth: 275, margin: "0.5rem" }}>
           <Box sx={{ padding: "1rem" }}>

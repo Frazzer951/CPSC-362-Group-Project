@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "../api/axios";
 import EditAboutMe from "../components/edit_about_me";
+import Post from "../components/postLink";
 import AuthContext from "../context/AuthProvider";
 
 export default function UserPage() {
@@ -13,6 +14,7 @@ export default function UserPage() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [display, setDisplay] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [posts, setPosts] = useState();
   const [refresh, setRefresh] = useState(false);
   const [user, setUser] = useState();
   const open = Boolean(anchorEl);
@@ -41,6 +43,16 @@ export default function UserPage() {
           username: username,
           about_me: about_me,
         });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get(`/user/posts/${userID}`)
+      .then((res) => {
+        console.log(res);
+        setPosts(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -91,6 +103,16 @@ export default function UserPage() {
               <Typography variant="h6">{user.about_me}</Typography>
             </CardContent>
           </Card>
+
+          <Divider />
+
+          {posts ? (
+            posts.map((post) => {
+              return <Post post={post} key={`user-post-${post.post_id}-${post.title}`} />;
+            })
+          ) : (
+            <h2>Loading</h2>
+          )}
 
           {display ? (
             <>
