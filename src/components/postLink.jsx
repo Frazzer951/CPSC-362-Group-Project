@@ -20,13 +20,13 @@ export default function Post(props) {
             <Box sx={{ margin: "0.2rem" }}>
               <ThumbUp sx={{ marginRight: "0.1rem" }} fontSize="inherit" color="primary" />
               <Typography variant="body" color="primary">
-                {Math.floor(Math.random() * 101)}
+                {post.likes}
               </Typography>
             </Box>
             <Box sx={{ margin: "0.2rem" }}>
               <ThumbDown sx={{ marginRight: "0.1rem" }} fontSize="inherit" color="primary" />
               <Typography variant="body" color="primary">
-                {Math.floor(Math.random() * 101)}
+                {post.dislikes}
               </Typography>
             </Box>
           </Box>

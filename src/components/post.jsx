@@ -30,9 +30,33 @@ export default function Post(props) {
   }, [auth, post.user_id]);
 
   useEffect(() => {
-    // TODO: Query backend if user has liked post
-    setLiked(false);
-    setDisliked(false);
+    console.log(auth);
+    if (auth.logged_in) {
+      axios
+        .get(`/posts/likes/?user_id=${auth.userID}&post_id=${postID}`)
+        .then(function (response) {
+          let data = response.data;
+          console.log(data);
+          if (data.has_rated) {
+            if (data.like) {
+              setLiked(true);
+              setDisliked(false);
+            } else {
+              setLiked(false);
+              setDisliked(true);
+            }
+          } else {
+            setLiked(false);
+            setDisliked(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      setLiked(false);
+      setDisliked(false);
+    }
   }, [auth]);
 
   const handleClick = (event) => {
@@ -96,13 +120,7 @@ export default function Post(props) {
         </Box>
 
         <Box sx={{ position: "absolute", bottom: "0.1rem", right: "1rem" }}>
-          <LikeDislikeButton
-            onClick={OnRate}
-            likes={Math.floor(Math.random() * 101)}
-            dislikes={Math.floor(Math.random() * 101)}
-            liked={liked}
-            disliked={disliked}
-          />
+          <LikeDislikeButton onClick={OnRate} likes={post.likes} dislikes={post.dislikes} liked={liked} disliked={disliked} />
         </Box>
 
         <Box sx={{ position: "absolute", top: "0.1rem", right: "0.5rem" }}>
