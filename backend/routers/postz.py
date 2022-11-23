@@ -187,7 +187,7 @@ async def has_made_rating(user_id: int, post_id: int):
     if not looking_for:
         return {"has_rated": False}
     if looking_for["like_state"]:
-        return {"has_rated": False, "like": True}
+        return {"has_rated": True, "like": True}
     else:
         return {"has_rated": True, "like": False}
 
