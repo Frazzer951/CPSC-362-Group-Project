@@ -24,7 +24,7 @@ async def retrieve_user_data(user_id: int):
     return looking_for
 
 
-@router.get("/posts/{user_id}", tags=["users"])
+@router.get("/user/posts/{user_id}", tags=["users"])
 async def retrieve_posts_from_user(user_id: int):
     con = sqlite3.connect("project.db")  # con is connection
     con.row_factory = row_to_dict
