@@ -108,12 +108,13 @@ async def edit_post_body(user_id: int, post_id: int, body: Text):
     user_id = looking_for["user_id"]
     # print(looking_for)
 
-    sql_query = f"""UPDATE Posts
-                    SET body = '{body.text}'
-                    WHERE user_id = {user_id} AND
-                        post_id = {post_id}"""
     try:
-        cur.execute(sql_query)
+        cur.execute(
+            """UPDATE Posts
+                SET body = ?
+                WHERE user_id = ? AND post_id = ?""",
+            (body.text, user_id, post_id),
+        )
     except:
         con.close()
         raise HTTPException(status_code=409, detail="Conflict")
