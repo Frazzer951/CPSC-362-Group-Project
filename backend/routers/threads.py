@@ -28,8 +28,8 @@ async def retrieve_specified_thread(thread_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"SELECT * FROM Threads WHERE thread_id={thread_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT * FROM Threads WHERE thread_id=?"
+    sq = cur.execute(sql_query, [thread_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchone()
     # Get the list of tuples generated from the query
@@ -60,8 +60,8 @@ async def edit_thread_name(user_id: int, name: str, thread_id: int):
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
 
-    sql_query = f"SELECT user_id, admin FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id, admin FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
@@ -71,10 +71,10 @@ async def edit_thread_name(user_id: int, name: str, thread_id: int):
     if not is_admin:
         con.close()
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""UPDATE Threads
-                    SET name = '{name}'
-                    WHERE thread_id = {thread_id}"""
-    cur.execute(sql_query)
+    sql_query = """UPDATE Threads
+                    SET name = ?
+                    WHERE thread_id = ?"""
+    cur.execute(sql_query, [name, thread_id])
     con.commit()
     con.close()
     return {"SUCCESS": True}
@@ -86,8 +86,8 @@ async def edit_thread_description(user_id: int, description: str, thread_id: int
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id, admin FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id, admin FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
@@ -96,10 +96,10 @@ async def edit_thread_description(user_id: int, description: str, thread_id: int
     is_admin = looking_for["admin"]
     if not is_admin:
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""UPDATE Threads
-                    SET description = '{description}'
-                    WHERE thread_id = {thread_id}"""
-    cur.execute(sql_query)
+    sql_query = """UPDATE Threads
+                    SET description = ?
+                    WHERE thread_id = ?"""
+    cur.execute(sql_query, [description, thread_id])
     con.commit()
     con.close()
     return {"SUCCESS": True}
@@ -111,8 +111,8 @@ async def delete_thread(user_id: int, thread_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id, admin FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id, admin FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
@@ -121,10 +121,10 @@ async def delete_thread(user_id: int, thread_id: int):
     if not is_admin:
         con.close()
         raise HTTPException(status_code=401, detail="User not Authorized")
-    sql_query = f"""DELETE FROM Threads
-                    WHERE thread_id = {thread_id}"""
+    sql_query = """DELETE FROM Threads
+                    WHERE thread_id = ?"""
     try:
-        cur.execute(sql_query)
+        cur.execute(sql_query, [thread_id])
     except sqlite3.IntegrityError:
         con.close()
         raise sqlite3.IntegrityError

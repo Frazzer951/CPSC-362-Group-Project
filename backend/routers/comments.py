@@ -20,10 +20,10 @@ async def retrieve_comments_from_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT C.user_id, username, body, comment_id
+    sql_query = """SELECT C.user_id, username, body, comment_id
                     FROM Comments C, Users U
-                    WHERE C.post_id = {post_id} and U.user_id = C.user_id"""
-    sq = cur.execute(sql_query)
+                    WHERE C.post_id = ? and U.user_id = C.user_id"""
+    sq = cur.execute(sql_query, [post_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchall()
     con.close()
@@ -54,18 +54,17 @@ async def edit_comment(user_id: int, comment_id: int, body: Text):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""UPDATE Comments
-                    SET body = '{body.text}'
-                    WHERE user_id = {user_id} AND
-                        comment_id = {comment_id}"""
+    sql_query = """UPDATE Comments
+                    SET body = ?
+                    WHERE user_id = ? AND comment_id = ?"""
     try:
-        cur.execute(sql_query)
+        cur.execute(sql_query, [body.text, user_id, comment_id])
     except:
         con.close()
         raise HTTPException(status_code=409, detail="Conflict")
@@ -84,17 +83,17 @@ async def delete_comment(user_id: int, comment_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""DELETE FROM Comments
-                    WHERE user_id = {user_id} AND
-                        comment_id = {comment_id}"""
+    sql_query = """DELETE FROM Comments
+                    WHERE user_id = ? AND
+                        comment_id = ?"""
     try:
-        cur.execute(sql_query)
+        cur.execute(sql_query, [user_id, comment_id])
     except sqlite3.IntegrityError:
         con.close()
         raise HTTPException(status_code=409, detail="Conflict")

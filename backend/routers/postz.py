@@ -18,10 +18,10 @@ async def retrieve_posts_in_thread(thread_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id FROM
-                    Posts P, Users U WHERE thread_id = {thread_id}
-                    AND P.user_id = U.user_id"""
-    sq = cur.execute(sql_query)
+    sql_query = """SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id
+                    FROM Posts P, Users U
+                    WHERE thread_id = ? AND P.user_id = U.user_id"""
+    sq = cur.execute(sql_query, [thread_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchall()
     for post in looking_for:
@@ -44,15 +44,15 @@ async def retrieve_specified_post(post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT P.user_id, username, title, body
+    sql_query = """SELECT P.user_id, username, title, body
                     FROM Posts P, Users U
-                    WHERE P.post_id = {post_id} and U.user_id = P.user_id"""
-    sq = cur.execute(sql_query)
+                    WHERE P.post_id = ? and U.user_id = P.user_id"""
+    sq = cur.execute(sql_query, [post_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchone()
     sql_query = """SELECT COUNT(CASE WHEN like_state = 1 THEN 1 END) AS likes,
-                              COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
-                              FROM LIKES WHERE post_id = ?"""
+                    COUNT(CASE WHEN like_state = 0 THEN 1 END) AS dislikes
+                    FROM LIKES WHERE post_id = ?"""
     # Get the list of tuples generated form the query
 
     sq = cur.execute(sql_query, [post_id])
@@ -76,8 +76,8 @@ async def create_post_in_thread(thread_id: int, post: Post):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {post.user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [post.user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
@@ -99,8 +99,8 @@ async def edit_post_body(user_id: int, post_id: int, body: Text):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
@@ -108,12 +108,14 @@ async def edit_post_body(user_id: int, post_id: int, body: Text):
     user_id = looking_for["user_id"]
     # print(looking_for)
 
+    sql_query = """UPDATE Posts
+                SET body = ?
+                WHERE user_id = ? AND post_id = ?"""
+
     try:
         cur.execute(
-            """UPDATE Posts
-                SET body = ?
-                WHERE user_id = ? AND post_id = ?""",
-            (body.text, user_id, post_id),
+            sql_query,
+            [body.text, user_id, post_id],
         )
     except:
         con.close()
@@ -129,19 +131,18 @@ async def edit_post_title(user_id: int, post_id: int, title: str):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         con.close()
         raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
-    sql_query = f"""UPDATE Posts
-                    SET title = '{title}'
-                    WHERE user_id = {user_id} AND
-                        post_id = {post_id}"""
+    sql_query = """UPDATE Posts
+                    SET title = ?
+                    WHERE user_id = ? AND post_id = ?"""
     try:
-        cur.execute(sql_query)
+        cur.execute(sql_query, [title, user_id, post_id])
     except:
         con.close()
         raise HTTPException(status_code=409, detail="Conflict")
@@ -156,16 +157,15 @@ async def delete_post(user_id: int, post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
-    sql_query = f"""DELETE FROM Posts
-                    WHERE user_id = {user_id} AND
-                        post_id = {post_id}"""
-    cur.execute(sql_query)
+    sql_query = """DELETE FROM Posts
+                    WHERE user_id = ? AND post_id = ?"""
+    cur.execute(sql_query, [user_id, post_id])
     con.commit()
     con.close()
     return {"SUCCESS": True}
@@ -177,12 +177,14 @@ async def has_made_rating(user_id: int, post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
+    sql_query = """SELECT user_id, post_id, like_state
+                    FROM LIKES
+                    WHERE user_id = ? AND post_ID = ?"""
     sq = cur.execute(sql_query, [user_id, post_id])
     looking_for = sq.fetchone()
     if not looking_for:
@@ -199,12 +201,14 @@ async def like_or_dislike_post(user_id: int, post_id: int, like_state: bool):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"SELECT user_id, post_id, like_state FROM LIKES WHERE user_id = ? AND post_ID = ?"
+    sql_query = """SELECT user_id, post_id, like_state
+                    FROM LIKES
+                    WHERE user_id = ? AND post_ID = ?"""
     sq = cur.execute(sql_query, [user_id, post_id])
     looking_for = sq.fetchall()
     if not looking_for:
@@ -232,16 +236,15 @@ async def unlike_or_undislike(user_id: int, post_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
     user_id = looking_for["user_id"]
-    sql_query = f"""DELETE FROM Likes
-                    WHERE user_id = {user_id} AND
-                        post_id = {post_id}"""
-    cur.execute(sql_query)
+    sql_query = """DELETE FROM Likes
+                    WHERE user_id = ? AND post_id = ?"""
+    cur.execute(sql_query, [user_id, post_id])
     con.commit()
     con.close()
     return {"SUCCESS": True}

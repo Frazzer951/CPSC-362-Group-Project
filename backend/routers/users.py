@@ -30,10 +30,10 @@ async def retrieve_posts_from_user(user_id: int):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"""SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id FROM
-                    Posts P, Users U WHERE U.user_id = {user_id}
-                    AND P.user_id = U.user_id"""
-    sq = cur.execute(sql_query)
+    sql_query = """SELECT U.username, P.post_id, P.user_id, P.title, P.thread_id
+                    FROM Posts P, Users U
+                    WHERE U.user_id = ? AND P.user_id = U.user_id"""
+    sq = cur.execute(sql_query, [user_id])
     # sq is a cursor resulting from the query made
     looking_for = sq.fetchall()
     for post in looking_for:
@@ -92,22 +92,19 @@ async def edit_about_me(user_id: int, text: Text):
     con.row_factory = row_to_dict
     con.execute("PRAGMA foreign_keys = ON")
     cur = con.cursor()  # cur is cursor
-    sql_query = f"SELECT user_id FROM Users WHERE user_id = {user_id}"
-    sq = cur.execute(sql_query)
+    sql_query = "SELECT user_id FROM Users WHERE user_id = ?"
+    sq = cur.execute(sql_query, [user_id])
     looking_for = sq.fetchone()
     if not looking_for:
         raise HTTPException(status_code=404, detail="User not found")
-    sql_query = f"""UPDATE Users
-                    SET about_me = '{text.text}'
-                    WHERE user_id = {user_id}"""
+    sql_query = """UPDATE Users
+                    SET about_me = ?
+                    WHERE user_id = ?"""
     try:
-        cur.execute(sql_query)
+        cur.execute(sql_query, [text.text, user_id])
     except Exception as error:
         con.close()
         raise error
     con.commit()
     con.close()
     return {"detail": "SUCCESS"}
-
-
-"""THE about me is having issue with a string that has an apostrphe in it"""
