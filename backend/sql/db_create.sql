@@ -36,7 +36,7 @@ CREATE TABLE
         CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE
     );
 
-CREATE TABLE 
+CREATE TABLE
         LIKES(
             user_id INTEGER NOT NULL,
             post_id INTEGER NOT NULL,
