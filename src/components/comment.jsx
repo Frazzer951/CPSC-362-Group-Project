@@ -15,7 +15,7 @@ export default function Comment(props) {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    if (auth.logged_in && auth.userID === comment.user_id) {
+    if (auth.logged_in && (auth.userID === comment.user_id || auth.isAdmin === 1)) {
       console.log("Setting to true");
       setDisplay(true);
     } else {

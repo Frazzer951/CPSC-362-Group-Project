@@ -20,7 +20,7 @@ export default function Post(props) {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    if (auth.logged_in && auth.userID === post.user_id) {
+    if (auth.logged_in && (auth.userID === post.user_id || auth.isAdmin === 1)) {
       console.log("Setting to true");
       setDisplay(true);
     } else {
