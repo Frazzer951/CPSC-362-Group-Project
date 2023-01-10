@@ -9,7 +9,7 @@
     "@fontsource/roboto": "^4.5",
     "@mui/icons-material": "^5.10",
     "@mui/lab": "^5.0.0-alpha.102",
-    "@mui/material": "^5.10",
+    "@mui/material": "^5.11",
     "axios": "^1.2",
     "eslint-config-react-app": "^7.0",
     "react": "^18.2",
